@@ -1,0 +1,18 @@
+{
+  "signal": [
+    { "name": "Address", "wave": "x4......x.", "data": ["Valid address"] },
+    { "name": "Chip Select", "wave": "1.0.....1." },
+    { "name": "Out Enable", "wave": "1.0.....1." },
+    { "name": "Data Out", "wave": "z...x6...z", "data": ["Valid data"] }
+  ],
+  "edge": [
+    "[0^:1.2]+[0^:8] $t_{WC}$",
+    "[0v:1]+[0v:5] $t_{AQ}$",
+    "[1:2]+[1:5] $t_{EQ}$",
+    "[2:2]+[2:5] $t_{GQ}$",
+    "[0^:5]-[3v:5]{lightgray,:}"
+  ],
+  "config": {
+    "hscale": 1
+  }
+}

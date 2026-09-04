@@ -1,4 +1,0 @@
-interface:
-  display_name: "Forge Tools"
-  short_description: "Route agents to the right Forge workflow"
-  default_prompt: "Use $forge-tools to decide which Forge workflow or CLI command applies."

@@ -10,6 +10,8 @@ Use this repo to preserve reusable workflow instructions. Use `iancleary/forge` 
 
 This repo is the intended migration home for portable non-Forge-CLI skills that do not need to ship inside Forge releases. Do not move a skill here from Forge unless the migration keeps the installed capability surface intact or the user explicitly accepts the break.
 
+Forge-specific skills such as `forge-tools` and `forge-cli` belong only in `iancleary/forge`.
+
 ## Before Editing
 
 - check `git status --short`
@@ -67,8 +69,8 @@ Write for future agents. Be direct, specific, and compact.
 
 Prefer:
 
-- "Run `forge doctor` before using Forge-backed workflows."
-- "Use `iancleary/forge` for executable tools."
+- "Use `api-and-interface-design` before changing a stable CLI contract."
+- "Use `iancleary/forge` for executable tools and Forge-specific skills."
 
 Avoid:
 

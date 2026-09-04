@@ -1,4 +1,0 @@
-interface:
-  display_name: "Forge CLI"
-  short_description: "Use and maintain the Forge CLI safely"
-  default_prompt: "Use $forge-cli to inspect, install, update, or validate Forge."

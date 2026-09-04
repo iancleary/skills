@@ -1,0 +1,9 @@
+{
+  "signal": [
+    { "name": "clk", "wave": "P......" },
+    { "name": "cs_n", "wave": "1.0....1" },
+    { "name": "addr", "wave": "x.===..x", "data": ["hdr", "payload", "crc"] },
+    { "name": "ready", "wave": "0....10." }
+  ],
+  "config": { "hscale": 2 }
+}

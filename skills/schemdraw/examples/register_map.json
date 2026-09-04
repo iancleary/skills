@@ -1,0 +1,10 @@
+{
+  "reg": [
+    { "name": "MODE", "bits": 3, "attr": "RW" },
+    { "name": "EN", "bits": 1, "attr": "RW" },
+    { "bits": 4 },
+    { "name": "COUNT", "bits": 8, "attr": "RO" },
+    { "name": "CRC", "bits": 8, "attr": "RO" },
+    { "name": "FLAGS", "bits": 8, "attr": "RW", "type": 4 }
+  ]
+}

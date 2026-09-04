@@ -1,59 +1,51 @@
-I want you to install Ian Cleary's agent skills for Forge. Execute all steps autonomously.
+I want you to install Ian Cleary's portable agent skills. Execute all steps autonomously.
 
-OBJECTIVE: Install Forge, verify it works, and install the skills from `iancleary/skills` so your agent knows when and how to use Forge workflows.
+OBJECTIVE: Install the skills from `iancleary/skills` so your agent has Ian's portable workflow instructions available in the requested scope.
 
-DONE WHEN: `forge version` succeeds, `forge doctor` succeeds or reports only documented non-blocking environment warnings, and `npx skills list` shows the Forge skills installed.
+DONE WHEN: `npx skills list` shows representative skills from this repository, such as `design-algorithm`, `source-driven-development`, and `debugging-and-error-recovery`.
 
 ## TODO
 
-- [ ] Check whether Forge is already installed
-- [ ] Install or update Forge if needed
-- [ ] Verify Forge
+- [ ] Decide install target
 - [ ] Install skills
 - [ ] Verify skills
 
-## Step 0: Check Forge
+## Step 0: Decide Install Target
 
-Check whether `forge` is available:
+Use a local repo install when the skills should apply only to the current repository:
 
-```bash
-forge version
-```
-
-If `forge` is not installed, inspect the `iancleary/forge` repository for the current install instructions before choosing an install method. Prefer the repository's documented installer over guessing.
-
-## Step 1: Verify Forge
-
-Run:
-
-```bash
-forge doctor
-```
-
-If `forge doctor` reports missing optional integrations, continue only when they are unrelated to the user's requested workflow. Fix required failures before installing skills.
-
-## Step 2: Install Skills
-
-Install the skills from this repository:
-
-```bash
+```sh
 npx skills add iancleary/skills
 ```
 
-To install globally, use:
+Use a user-global install when the skills should be available across the machine:
 
-```bash
+```sh
 npx skills add iancleary/skills -g
 ```
 
-## Step 3: Verify Skills
+If a machine policy tool such as Forge is available, prefer the policy-managed target rather than guessing.
+
+## Step 1: Install Skills
+
+Run the selected install command from Step 0.
+
+## Step 2: Verify Skills
 
 Run:
 
-```bash
+```sh
 npx skills list
 ```
 
-Confirm that `forge-tools` and `forge-cli` are listed. Restart the agent session if the runtime requires a restart to load newly installed skills.
+Confirm that representative portable workflow skills are listed:
 
-EXECUTE NOW: Start with Step 0. Mark TODO items complete as you go. Stop when Forge is verified and the skills are installed.
+- `design-algorithm`
+- `source-driven-development`
+- `debugging-and-error-recovery`
+- `api-and-interface-design`
+- `documentation-and-adrs`
+
+Restart the agent session if the runtime requires a restart to load newly installed skills.
+
+EXECUTE NOW: Start with Step 0. Mark TODO items complete as you go. Stop when the skills are installed and verified.

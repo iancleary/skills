@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "forge-schemdraw-tool"
+version = "0.1.0"
+description = "Local uv-installable helper for rendering Schemdraw Python or SDL files"
+requires-python = ">=3.9"
+dependencies = [
+  "schemdraw>=0.22,<1",
+]
+
+[project.scripts]
+schemdraw-tool = "forge_schemdraw.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/forge_schemdraw"]

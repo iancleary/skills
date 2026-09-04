@@ -22,6 +22,8 @@ Use `iancleary/forge` for executable tooling:
 
 This repo is the intended home for portable non-Forge-CLI workflow skills once Forge policy can install and pin it for a machine or repo. Keep Forge-coupled CLI skills in `iancleary/forge`.
 
+Forge-specific skills such as `forge-tools` and `forge-cli` should not live here.
+
 ## Editing Skills
 
 When editing a skill:

@@ -30,22 +30,36 @@ Then verify:
 npx skills list
 ```
 
-The seed skills are:
+Included skills:
 
-- `forge-tools`: route agents to the right Forge workflow or CLI skill
-- `forge-cli`: use and troubleshoot the Forge CLI itself
+- `api-and-interface-design`
+- `chrome-devtools-mcp`
+- `code-simplification`
+- `codegraph`
+- `debugging-and-error-recovery`
+- `design-algorithm`
+- `documentation-and-adrs`
+- `git-forge-body-file`
+- `learning-systems`
+- `librarian`
+- `schemdraw`
+- `security-and-hardening`
+- `source-driven-development`
+- `test-strategy`
+- `thinking-in-the-limit`
+- `typst-documents`
+- `webwright`
 
 ## Repository Shape
 
 ```text
 install.md
 skills/
-  forge-tools/
+  design-algorithm/
     SKILL.md
-    agents/openai.yaml
-  forge-cli/
+  source-driven-development/
     SKILL.md
-    agents/openai.yaml
+  ...
 ```
 
 Each skill must include a `SKILL.md` with frontmatter containing only `name` and `description`. The description is the trigger contract; write it carefully.
@@ -83,3 +97,5 @@ Use this split:
 If a change requires executable code, it probably belongs in Forge. If a change teaches agents how to choose or safely use an existing tool, it probably belongs here.
 
 Long term, Forge policy should decide whether a machine installs this repo into the user-global target, a repo-local target, or both.
+
+Forge-specific skills such as `forge-tools` and `forge-cli` belong only in `iancleary/forge`.
