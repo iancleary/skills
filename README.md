@@ -6,6 +6,8 @@ This repository is the instruction layer for Ian Cleary's agent tooling. It tell
 
 The companion tools repo is [`iancleary/forge`](https://github.com/iancleary/forge). Use Forge to install, update, verify, and release the underlying toolbelt. Use this repo to install portable skill instructions.
 
+This repo is also the intended migration home for portable non-Forge-CLI skills that were originally bundled in Forge releases. Forge should keep skills that must move with Forge binaries or Forge-managed assets; this repo should own reusable workflow skills that can be installed by policy.
+
 ## Install
 
 For an agent-driven install, use [`install.md`](install.md).
@@ -61,6 +63,7 @@ Good candidates:
 - command safety and verification rules
 - stable installation or recovery playbooks
 - recurring agent tasks that should not depend on memory
+- portable workflow skills migrated out of Forge once `forge policy` can install and pin this repo
 
 Poor candidates:
 
@@ -78,3 +81,5 @@ Use this split:
 - `iancleary/skills`: portable instructions that teach agents when and how to use those tools
 
 If a change requires executable code, it probably belongs in Forge. If a change teaches agents how to choose or safely use an existing tool, it probably belongs here.
+
+Long term, Forge policy should decide whether a machine installs this repo into the user-global target, a repo-local target, or both.

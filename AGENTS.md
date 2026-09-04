@@ -8,12 +8,15 @@ This repo is a portable agent-skill distribution repo. It is not the implementat
 
 Use this repo to preserve reusable workflow instructions. Use `iancleary/forge` for executable tools, release machinery, managed Codex assets, and implementation docs.
 
+This repo is the intended migration home for portable non-Forge-CLI skills that do not need to ship inside Forge releases. Do not move a skill here from Forge unless the migration keeps the installed capability surface intact or the user explicitly accepts the break.
+
 ## Before Editing
 
 - check `git status --short`
 - read the skill you plan to change
 - keep the change scoped to the requested skill or repo-level doc
 - verify whether the behavior belongs here or in the owning tools repo
+- when migrating a skill from Forge, check the Forge docs and release-skill list before removing it from Forge
 
 ## Skill Rules
 
