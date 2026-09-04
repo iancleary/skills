@@ -21,7 +21,12 @@ REPO = "iancleary/skills"
 
 
 def run(args: list[str], *, check: bool = True) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(args, check=check, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    result = subprocess.run(args, check=False, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if check and result.returncode != 0:
+        command = " ".join(args)
+        detail = result.stderr.strip() or result.stdout.strip() or "command failed without output"
+        raise SystemExit(f"{command} failed:\n{detail}")
+    return result
 
 
 def git(args: list[str], *, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -143,20 +148,22 @@ def notes_for(version: str, notes_file: Path | None) -> str:
 
 
 def dry_run(version: str, notes_file: Path | None) -> None:
+    target = git_stdout(["rev-parse", "HEAD"])
     print(f"repo: {REPO}")
     print(f"version: {version}")
-    print(f"target: {git_stdout(['rev-parse', 'HEAD'])}")
+    print(f"target: {target}")
     print(f"current_version: {current_version() or 'none'}")
     print("release_notes:")
     print(notes_for(version, notes_file).rstrip())
     print("would run:")
-    print(f"gh release create {version} --repo {REPO} --target HEAD --title 'Release {version}' --notes-file <generated>")
+    print(f"gh release create {version} --repo {REPO} --target {target} --title 'Release {version}' --notes-file <generated>")
 
 
 def create_release(version: str, notes_file: Path | None) -> None:
     ensure_clean_tree()
     ensure_main_matches_origin()
     ensure_tag_available(version)
+    target = git_stdout(["rev-parse", "HEAD"])
 
     notes = notes_for(version, notes_file)
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", delete=False) as handle:
@@ -171,7 +178,7 @@ def create_release(version: str, notes_file: Path | None) -> None:
             "--repo",
             REPO,
             "--target",
-            "HEAD",
+            target,
             "--title",
             f"Release {version}",
             "--notes-file",
