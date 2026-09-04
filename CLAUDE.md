@@ -47,3 +47,16 @@ git diff --check
 ```
 
 Do not add private memory, account details, or local-only secrets to this public repo.
+
+## Releases
+
+Read `docs/release.md` before cutting a release.
+
+Use:
+
+```sh
+uv run scripts/cut_release.py --dry-run
+uv run scripts/cut_release.py
+```
+
+For ordinary release requests, follow the `cut-release` skill and do not recreate the tag/release flow by hand.

@@ -30,12 +30,26 @@ Then verify:
 npx skills list
 ```
 
+## Releases
+
+This repo uses UTC calendar versions in `YYYY.MM.DD.XX` format, with `XX` starting at `0` each day.
+
+Use the checked-in Python runner through `uv`:
+
+```sh
+uv run scripts/cut_release.py --dry-run
+uv run scripts/cut_release.py
+```
+
+See [`docs/release.md`](docs/release.md).
+
 Included skills:
 
 - `api-and-interface-design`
 - `chrome-devtools-mcp`
 - `code-simplification`
 - `codegraph`
+- `cut-release`
 - `debugging-and-error-recovery`
 - `design-algorithm`
 - `documentation-and-adrs`

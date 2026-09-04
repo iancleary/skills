@@ -16,6 +16,7 @@ Forge-specific skills such as `forge-tools` and `forge-cli` belong only in `ianc
 
 - check `git status --short`
 - read the skill you plan to change
+- read `docs/release.md` before cutting or changing releases
 - keep the change scoped to the requested skill or repo-level doc
 - verify whether the behavior belongs here or in the owning tools repo
 - when migrating a skill from Forge, check the Forge docs and release-skill list before removing it from Forge
@@ -55,6 +56,17 @@ git diff --check
 ```
 
 Before pushing, inspect the diff and make sure repo-level docs still describe the current tree.
+
+## Releases
+
+Use the repo-local release runner:
+
+```sh
+uv run scripts/cut_release.py --dry-run
+uv run scripts/cut_release.py
+```
+
+For ordinary release requests, use the `cut-release` skill and the checked-in runner. Versions use UTC `YYYY.MM.DD.XX`, where `XX` starts at `0` for the first release of the UTC day.
 
 ## Safety
 
