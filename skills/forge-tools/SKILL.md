@@ -23,11 +23,11 @@ When the command or workflow is uncertain, inspect the installed Forge surface i
 
 ```bash
 forge --help
-forge tool list
+forge skills list
 forge doctor
 ```
 
-If `forge tool list` is unavailable, use `forge --help` and the repo-local instructions for the task.
+If `forge skills list` is unavailable, use `forge --help` and the repo-local instructions for the task.
 
 ## Working Rules
 

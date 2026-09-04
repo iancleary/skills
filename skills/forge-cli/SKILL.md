@@ -12,7 +12,7 @@ Use `forge` for Forge management and diagnostics. Use task-specific skills for a
 Start with:
 
 ```bash
-forge --version
+forge version
 forge doctor
 forge --help
 ```
@@ -24,8 +24,9 @@ Treat `forge doctor` required failures as blockers for Forge-backed workflows. O
 Inspect available Forge-managed tools before assuming a command exists:
 
 ```bash
-forge tool list
-forge tool --help
+forge version
+forge skills list
+forge --help
 ```
 
 If the installed Forge version does not support those commands, use `forge --help` and the current `iancleary/forge` repository documentation.
@@ -35,7 +36,7 @@ If the installed Forge version does not support those commands, use `forge --hel
 Before updating Forge or managed tools, check the current version and working directory state:
 
 ```bash
-forge --version
+forge version
 git status --short
 ```
 

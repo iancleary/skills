@@ -2,7 +2,7 @@ I want you to install Ian Cleary's agent skills for Forge. Execute all steps aut
 
 OBJECTIVE: Install Forge, verify it works, and install the skills from `iancleary/skills` so your agent knows when and how to use Forge workflows.
 
-DONE WHEN: `forge --version` succeeds, `forge doctor` succeeds or reports only documented non-blocking environment warnings, and `npx skills list` shows the Forge skills installed.
+DONE WHEN: `forge version` succeeds, `forge doctor` succeeds or reports only documented non-blocking environment warnings, and `npx skills list` shows the Forge skills installed.
 
 ## TODO
 
@@ -17,7 +17,7 @@ DONE WHEN: `forge --version` succeeds, `forge doctor` succeeds or reports only d
 Check whether `forge` is available:
 
 ```bash
-forge --version
+forge version
 ```
 
 If `forge` is not installed, inspect the `iancleary/forge` repository for the current install instructions before choosing an install method. Prefer the repository's documented installer over guessing.
