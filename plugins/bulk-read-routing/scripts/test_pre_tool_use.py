@@ -63,6 +63,9 @@ class PreToolUseTests(unittest.TestCase):
         self.assertIn("planner tier", reason)
         self.assertIn("`bulk_reader_fast` role", reason)
         self.assertIn("spot-check", reason)
+        self.assertIn("remain responsible", reason)
+        self.assertIn("unavailable agents", reason)
+        self.assertIn("inadequate result", reason)
 
     def test_sol_model_uses_planner_tier(self):
         self.write_lines("large.txt", 351)
@@ -81,6 +84,7 @@ class PreToolUseTests(unittest.TestCase):
         self.assertIn("efficient tier", reason)
         self.assertIn("`bulk_reader` role", reason)
         self.assertIn("coordination cost", reason)
+        self.assertIn("recovering from the delegation path", reason)
 
     def test_unknown_model_gets_neutral_guidance(self):
         self.write_lines("large.txt", 351)
@@ -90,6 +94,7 @@ class PreToolUseTests(unittest.TestCase):
         reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
         self.assertIn("no configured tier", reason)
         self.assertIn("`explorer` role", reason)
+        self.assertIn("role is a recommendation", reason)
 
     def test_blocks_large_cat_from_exec_command(self):
         self.write_lines("large.txt", 351)

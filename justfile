@@ -13,3 +13,6 @@ install-plugin:
 
 install-agent-roles:
     python3 plugins/bulk-read-routing/scripts/install_agent_roles.py
+
+test-live-delegation:
+    python3 plugins/bulk-read-routing/scripts/test_live_delegation.py
