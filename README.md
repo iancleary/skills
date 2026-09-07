@@ -27,6 +27,12 @@ To install globally:
 npx skills add iancleary/skills -g
 ```
 
+From a clone of this repository, the equivalent command is:
+
+```sh
+just install-skills
+```
+
 Then verify:
 
 ```sh
@@ -42,6 +48,15 @@ hooks. Add its marketplace and install the bulk-read router with:
 codex plugin marketplace add iancleary/skills
 codex plugin add bulk-read-routing@iancleary-skills
 ```
+
+From a clone of this repository, use the idempotent recipe:
+
+```sh
+just install-plugin
+```
+
+The recipe adds the marketplace when it is missing and refreshes it when it is
+already configured before installing the plugin.
 
 Review and trust the plugin hook with `/hooks` in Codex. The hook blocks
 recognizable full-file reads above 350 lines and directs the agent to a bounded

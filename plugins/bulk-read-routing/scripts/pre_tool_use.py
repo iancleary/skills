@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import sys
 from typing import Any
@@ -13,6 +14,10 @@ from typing import Any
 
 DEFAULT_THRESHOLD = 350
 FULL_READ_COMMANDS = {"cat", "less", "more"}
+EXEC_COMMAND_LITERAL = re.compile(
+    r"\btools\.exec_command\s*\(\s*\{(?:(?!\}\s*\)).){0,4096}?\bcmd\s*:\s*",
+    re.DOTALL,
+)
 
 
 def threshold() -> int:
@@ -75,18 +80,42 @@ def direct_read_path(event: dict[str, Any], cwd: Path) -> Path | None:
     return resolve_path(tool_input.get("file_path") or tool_input.get("path"), cwd)
 
 
+def functions_exec_commands(tool_input: Any) -> list[str]:
+    if isinstance(tool_input, str):
+        source = tool_input
+    elif isinstance(tool_input, dict) and isinstance(tool_input.get("code"), str):
+        source = tool_input["code"]
+    else:
+        return []
+
+    commands: list[str] = []
+    decoder = json.JSONDecoder()
+    for match in EXEC_COMMAND_LITERAL.finditer(source):
+        try:
+            value, _ = decoder.raw_decode(source, match.end())
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, str):
+            commands.append(value)
+    return commands
+
+
 def blocked_paths(event: dict[str, Any]) -> list[Path]:
     cwd = Path(str(event.get("cwd") or Path.cwd()))
     tool_name = str(event.get("tool_name", ""))
     tool_input = event.get("tool_input")
     candidates: list[Path] = []
+    normalized_tool_name = tool_name.lower().replace("__", ".")
     shell_input_key = None
     if tool_name == "Bash":
         shell_input_key = "command"
     elif tool_name.lower().split(".")[-1] == "exec_command":
         shell_input_key = "cmd"
 
-    if shell_input_key is not None and isinstance(tool_input, dict):
+    if normalized_tool_name == "functions.exec":
+        for command in functions_exec_commands(tool_input):
+            candidates.extend(shell_read_paths(command, cwd))
+    elif shell_input_key is not None and isinstance(tool_input, dict):
         command = tool_input.get(shell_input_key)
         if isinstance(command, str):
             candidates.extend(shell_read_paths(command, cwd))
