@@ -10,3 +10,6 @@ install-plugin:
         codex plugin marketplace add iancleary/skills
     fi
     codex plugin add bulk-read-routing@iancleary-skills
+
+install-agent-roles:
+    python3 plugins/bulk-read-routing/scripts/install_agent_roles.py

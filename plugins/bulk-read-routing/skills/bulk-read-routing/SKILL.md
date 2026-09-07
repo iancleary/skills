@@ -18,6 +18,20 @@ When the hook blocks a read:
    file and line references.
 5. Spot-check the findings before using them for design or edits.
 
+The denial message uses the current model slug to select advice from
+`config/delegation.json`. Planner-tier models receive a stronger recommendation
+to delegate broad reading to the configured role. Efficient-tier models receive
+a stronger recommendation to use targeted reads first. Unknown models receive
+neutral advice. The role name is stable; Codex agent configuration owns the
+model assigned to that role.
+
+Run `just install-agent-roles` from the repository root to install the supplied
+`bulk_reader` and `bulk_reader_fast` personal roles. Edit
+`config/agent-roles.json` before installation to choose their models, reasoning
+effort, and `default` or `fast` service tier. The installer refuses to overwrite
+a different existing role unless the user explicitly passes `--force` to the
+script.
+
 Keep editing, security and privacy judgment, unresolved product decisions, and
 final verification with the primary agent. Do not delegate a small read when
 coordination overhead exceeds the likely context savings.
