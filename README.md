@@ -104,8 +104,10 @@ This repo uses UTC calendar versions in `YYYY.MM.DD.XX` format, with `XX` starti
 Use the checked-in Python runner through `uv`:
 
 ```sh
-uv run scripts/cut_release.py --dry-run
-uv run scripts/cut_release.py
+uv run scripts/release.py check --json
+uv run scripts/release.py plan --json
+uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --json
+uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --json
 ```
 
 See [`docs/release.md`](docs/release.md).

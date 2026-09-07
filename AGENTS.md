@@ -75,11 +75,13 @@ Before pushing, inspect the diff and make sure repo-level docs still describe th
 Use the repo-local release runner:
 
 ```sh
-uv run scripts/cut_release.py --dry-run
-uv run scripts/cut_release.py
+uv run scripts/release.py check --json
+uv run scripts/release.py plan --json
+uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --json
+uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --json
 ```
 
-For ordinary release requests, use the `cut-release` skill and the checked-in runner. Versions use UTC `YYYY.MM.DD.XX`, where `XX` starts at `0` for the first release of the UTC day.
+For ordinary release requests, use `release-runner` from `iancleary/release-skills` and the checked-in contract. Use `create-release-process` for maintenance. Versions use UTC `YYYY.MM.DD.XX`, where `XX` starts at `0` each day. Read `docs/release.md` for version selection and runner provenance.
 
 ## Safety
 

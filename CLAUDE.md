@@ -64,8 +64,10 @@ Read `docs/release.md` before cutting a release.
 Use:
 
 ```sh
-uv run scripts/cut_release.py --dry-run
-uv run scripts/cut_release.py
+uv run scripts/release.py check --json
+uv run scripts/release.py plan --json
+uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --json
+uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --json
 ```
 
-For ordinary release requests, follow the `cut-release` skill and do not recreate the tag/release flow by hand.
+For ordinary release requests, follow `release-runner` from `iancleary/release-skills` and the checked-in contract. Use `create-release-process` for maintenance. Read `docs/release.md` for version selection and runner provenance.

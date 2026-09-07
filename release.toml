@@ -1,0 +1,21 @@
+# Runner source: iancleary/release-skills v0.2.0.
+[release]
+name = "skills"
+runner = [
+  "uv", "run", "scripts/release.py", "tag-release",
+  "--provider", "github",
+  "--tag-prefix", "",
+  "--branch", "main",
+  "--check", "uv run scripts/release_policy.py check",
+  "--check", "uv run --python 3.11 python -B -m unittest discover -s plugins/bulk-read-routing/scripts -p test_*.py",
+]
+dry_run_args = ["--dry-run"]
+current_version_command = ["uv", "run", "scripts/release_policy.py", "current"]
+next_version_command = ["uv", "run", "scripts/release_policy.py", "next"]
+publish = true
+
+[checks]
+commands = [
+  ["git", "diff", "--check"],
+  ["uv", "run", "--python", "3.11", "python", "-B", "-m", "unittest", "discover", "-s", "plugins/bulk-read-routing/scripts", "-p", "test_*.py"],
+]
