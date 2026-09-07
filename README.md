@@ -67,8 +67,19 @@ just install-agent-roles
 Configure model, `modelReasoningEffort`, and `serviceTier` (`default` or `fast`)
 in `plugins/bulk-read-routing/config/agent-roles.json` before installation. The
 installer creates `~/.codex/agents/bulk_reader.toml` and
-`~/.codex/agents/bulk_reader_fast.toml`. It leaves `service_tier` unset for the
-default role and writes `service_tier = "fast"` for the fast role.
+`~/.codex/agents/bulk_reader_fast.toml` and registers both roles in a managed
+block in `~/.codex/config.toml`. It leaves `service_tier` unset for the default
+role and writes `service_tier = "fast"` for the fast role.
+
+Run the opt-in live delegation smoke test with:
+
+```sh
+just test-live-delegation
+```
+
+This test consumes model capacity and creates a Codex thread. It passes only
+when the hook blocks the read, a collaboration event contains a real receiver
+thread for `bulk_reader_fast` or `explorer`, and the parent reports success.
 
 Review and trust the plugin hook with `/hooks` in Codex. The hook blocks
 recognizable full-file reads above 350 lines and directs the agent to a bounded

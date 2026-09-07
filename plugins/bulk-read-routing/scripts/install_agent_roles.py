@@ -13,6 +13,9 @@ from typing import Any
 
 DEFAULT_CONFIG = Path(__file__).resolve().parent.parent / "config" / "agent-roles.json"
 DEFAULT_OUTPUT_DIR = Path.home() / ".codex" / "agents"
+DEFAULT_CODEX_CONFIG = Path.home() / ".codex" / "config.toml"
+BLOCK_START = "# BEGIN bulk-read-routing agent roles"
+BLOCK_END = "# END bulk-read-routing agent roles"
 NAME_RE = re.compile(r"^[A-Za-z0-9_-]+$")
 REASONING_EFFORTS = {"minimal", "low", "medium", "high", "xhigh", "max", "ultra"}
 SERVICE_TIERS = {"default", "fast"}
@@ -75,16 +78,63 @@ def render_role(role: dict[str, Any]) -> tuple[str, str]:
     return name, "\n".join(lines)
 
 
-def install(config: Path, output_dir: Path, force: bool) -> list[Path]:
-    rendered = [render_role(role) for role in load_roles(config)]
-    output_dir.mkdir(parents=True, exist_ok=True)
-    installed: list[Path] = []
+def registration_block(rendered: list[tuple[str, str]], roles: list[dict[str, Any]], codex_config: Path, output_dir: Path) -> str:
+    lines = [BLOCK_START]
+    for (name, _), role in zip(rendered, roles):
+        description = required_string(role, "description")
+        target = output_dir / f"{name}.toml"
+        try:
+            config_path = f"./{target.relative_to(codex_config.parent)}"
+        except ValueError:
+            config_path = str(target)
+        lines.extend(
+            [
+                f"[agents.{name}]",
+                f"description = {json.dumps(description)}",
+                f"config_file = {json.dumps(config_path)}",
+                "",
+            ]
+        )
+    lines.append(BLOCK_END)
+    return "\n".join(lines) + "\n"
+
+
+def updated_registration(codex_config: Path, block: str, role_names: list[str]) -> str:
+    existing = codex_config.read_text(encoding="utf-8") if codex_config.exists() else ""
+    if BLOCK_START in existing or BLOCK_END in existing:
+        if existing.count(BLOCK_START) != 1 or existing.count(BLOCK_END) != 1:
+            raise ValueError(f"invalid managed role block in {codex_config}")
+        start = existing.index(BLOCK_START)
+        end = existing.index(BLOCK_END, start) + len(BLOCK_END)
+        updated = existing[:start] + block.rstrip() + existing[end:]
+    else:
+        for name in role_names:
+            if re.search(rf"(?m)^\[agents\.{re.escape(name)}\]\s*$", existing):
+                raise ValueError(f"refusing to replace unmanaged agent registration: {name}")
+        separator = "" if not existing or existing.endswith("\n\n") else "\n"
+        updated = existing + separator + block
+    return updated
+
+
+def install(config: Path, output_dir: Path, codex_config: Path, force: bool) -> list[Path]:
+    roles = load_roles(config)
+    rendered = [render_role(role) for role in roles]
     for name, content in rendered:
         target = output_dir / f"{name}.toml"
         if target.exists() and target.read_text(encoding="utf-8") != content and not force:
             raise ValueError(f"refusing to overwrite different agent role: {target}")
+    block = registration_block(rendered, roles, codex_config, output_dir)
+    registration = updated_registration(
+        codex_config, block, [name for name, _ in rendered]
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    installed: list[Path] = []
+    for name, content in rendered:
+        target = output_dir / f"{name}.toml"
         target.write_text(content, encoding="utf-8")
         installed.append(target)
+    codex_config.parent.mkdir(parents=True, exist_ok=True)
+    codex_config.write_text(registration, encoding="utf-8")
     return installed
 
 
@@ -92,15 +142,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--codex-config", type=Path, default=DEFAULT_CODEX_CONFIG)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     try:
-        installed = install(args.config, args.output_dir, args.force)
+        installed = install(args.config, args.output_dir, args.codex_config, args.force)
     except ValueError as error:
         print(str(error), file=sys.stderr)
         return 2
     for path in installed:
         print(f"installed agent role: {path}")
+    print(f"registered agent roles: {args.codex_config}")
     return 0
 
 
