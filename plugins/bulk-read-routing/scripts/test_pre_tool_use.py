@@ -100,6 +100,19 @@ class PreToolUseTests(unittest.TestCase):
         self.write_lines("small.txt", 350)
         self.assertEqual(run_hook(self.bash_event("cat small.txt")).stdout, "")
 
+    def test_blocks_unresolved_relative_cat(self):
+        payload = json.loads(run_hook(self.bash_event("cat elsewhere.txt")).stdout)
+        reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
+        self.assertIn("could not be sized", reason)
+
+    def test_allows_missing_direct_read_to_report_its_own_error(self):
+        event = {
+            "tool_name": "mcp__fs__read",
+            "cwd": str(self.root),
+            "tool_input": {"path": "missing.txt"},
+        }
+        self.assertEqual(run_hook(event).stdout, "")
+
     def test_blocks_large_file_without_final_newline(self):
         (self.root / "large.txt").write_text("line\n" * 350 + "line")
         payload = json.loads(run_hook(self.bash_event("cat large.txt")).stdout)

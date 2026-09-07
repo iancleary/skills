@@ -1,6 +1,6 @@
 {
   "name": "bulk-read-routing",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Keep large full-file reads out of the primary agent context.",
   "author": {
     "name": "Ian Cleary"
