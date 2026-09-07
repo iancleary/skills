@@ -1,0 +1,20 @@
+{
+  "name": "iancleary-skills",
+  "interface": {
+    "displayName": "Ian Cleary's Skills"
+  },
+  "plugins": [
+    {
+      "name": "bulk-read-routing",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bulk-read-routing"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "bulk-read-routing",
+  "version": "0.1.0",
+  "description": "Keep large full-file reads out of the primary agent context.",
+  "author": {
+    "name": "Ian Cleary"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Bulk Read Routing",
+    "shortDescription": "Route large reads to targeted inspection or delegation.",
+    "longDescription": "Blocks recognizable full-file reads above a line threshold and guides Codex toward targeted ranges or bounded subagent summaries.",
+    "developerName": "Ian Cleary",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": "Help me inspect large files without flooding the primary context."
+  }
+}

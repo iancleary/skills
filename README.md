@@ -2,7 +2,10 @@
 
 Portable skills for agent workflows that should survive outside a single repo checkout.
 
-This repository is the instruction layer for Ian Cleary's agent tooling. It tells agents when to reach for a workflow, what command surface owns the work, and how to verify that the work is done.
+This repository is the portable workflow layer for Ian Cleary's agent tooling.
+It tells agents when to reach for a workflow, what command surface owns the
+work, and how to verify that the work is done. Small plugins can live here when
+they make one workflow enforceable without creating a reusable CLI.
 
 The companion tools repo is [`iancleary/forge`](https://github.com/iancleary/forge). Use Forge to install, update, verify, and release the underlying toolbelt. Use this repo to install portable skill instructions.
 
@@ -29,6 +32,21 @@ Then verify:
 ```sh
 npx skills list
 ```
+
+## Plugins
+
+The repository also provides Codex plugins for workflows that require lifecycle
+hooks. Add its marketplace and install the bulk-read router with:
+
+```sh
+codex plugin marketplace add iancleary/skills
+codex plugin add bulk-read-routing@iancleary-skills
+```
+
+Review and trust the plugin hook with `/hooks` in Codex. The hook blocks
+recognizable full-file reads above 350 lines and directs the agent to a bounded
+read or subagent summary. Set `BULK_READ_LINE_THRESHOLD` to a positive integer
+before starting Codex to choose another threshold.
 
 ## Releases
 
@@ -67,7 +85,14 @@ Included skills:
 ## Repository Shape
 
 ```text
+.agents/plugins/marketplace.json
 install.md
+plugins/
+  bulk-read-routing/
+    .codex-plugin/plugin.json
+    hooks/hooks.json
+    scripts/pre_tool_use.py
+    skills/bulk-read-routing/SKILL.md
 skills/
   design-algorithm/
     SKILL.md
@@ -92,13 +117,14 @@ Good candidates:
 - stable installation or recovery playbooks
 - recurring agent tasks that should not depend on memory
 - portable workflow skills migrated out of Forge once `forge policy` can install and pin this repo
+- small hook-based plugins whose helper is inseparable from the workflow
 
 Poor candidates:
 
 - one-off project notes
 - private account details
 - speculative workflows that have not earned a stable contract
-- full tool implementations
+- full tools or reusable CLIs
 - docs that belong in the owning code repo
 
 ## Forge Split
@@ -106,9 +132,11 @@ Poor candidates:
 Use this split:
 
 - `iancleary/forge`: tools, binaries, release scripts, managed assets, implementation docs
-- `iancleary/skills`: portable instructions that teach agents when and how to use those tools
+- `iancleary/skills`: portable instructions and small workflow-bound plugins
 
-If a change requires executable code, it probably belongs in Forge. If a change teaches agents how to choose or safely use an existing tool, it probably belongs here.
+If executable code has a useful standalone command surface, it belongs in
+Forge. If a small helper only enforces one portable workflow, it can remain
+beside that skill in this repo.
 
 Long term, Forge policy should decide whether a machine installs this repo into the user-global target, a repo-local target, or both.
 

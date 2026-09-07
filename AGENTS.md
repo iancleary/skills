@@ -4,9 +4,15 @@ Guidance for agents working in `iancleary/skills`.
 
 ## Purpose
 
-This repo is a portable agent-skill distribution repo. It is not the implementation home for Forge or any other CLI.
+This repo distributes portable agent skills and small plugins that make those
+skills enforceable. It is not the implementation home for Forge or another
+general-purpose CLI.
 
-Use this repo to preserve reusable workflow instructions. Use `iancleary/forge` for executable tools, release machinery, managed Codex assets, and implementation docs.
+Use this repo to preserve reusable workflow instructions. A skill or plugin can
+include a small executable helper when the helper is inseparable from that
+workflow and has no useful standalone command surface. Use `iancleary/forge`
+for general-purpose executable tools, release machinery, fleet-wide Codex asset
+deployment, and implementation docs.
 
 This repo is the intended migration home for portable non-Forge-CLI skills that do not need to ship inside Forge releases. Do not move a skill here from Forge unless the migration keeps the installed capability surface intact or the user explicitly accepts the break.
 
@@ -30,7 +36,7 @@ Forge-specific skills such as `forge-tools` and `forge-cli` belong only in `ianc
 - the `description` must say when the skill should be used
 - keep the skill body concise and procedural
 - prefer command contracts, decision rules, and verification checks over generic advice
-- do not add scripts, references, or assets unless the skill actually needs them
+- do not add scripts, references, or assets unless the skill or plugin actually needs them
 
 ## Repository Docs
 
