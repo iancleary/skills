@@ -58,6 +58,18 @@ just install-plugin
 The recipe adds the marketplace when it is missing and refreshes it when it is
 already configured before installing the plugin.
 
+Install the supplied personal delegation roles with:
+
+```sh
+just install-agent-roles
+```
+
+Configure model, `modelReasoningEffort`, and `serviceTier` (`default` or `fast`)
+in `plugins/bulk-read-routing/config/agent-roles.json` before installation. The
+installer creates `~/.codex/agents/bulk_reader.toml` and
+`~/.codex/agents/bulk_reader_fast.toml`. It leaves `service_tier` unset for the
+default role and writes `service_tier = "fast"` for the fast role.
+
 Review and trust the plugin hook with `/hooks` in Codex. The hook blocks
 recognizable full-file reads above 350 lines and directs the agent to a bounded
 read or subagent summary. Its model-tier policy in
@@ -113,6 +125,7 @@ install.md
 plugins/
   bulk-read-routing/
     .codex-plugin/plugin.json
+    config/agent-roles.json
     config/delegation.json
     hooks/hooks.json
     scripts/pre_tool_use.py

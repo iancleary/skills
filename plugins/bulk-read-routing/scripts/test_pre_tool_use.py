@@ -61,7 +61,7 @@ class PreToolUseTests(unittest.TestCase):
         )
         reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
         self.assertIn("planner tier", reason)
-        self.assertIn("`explorer` role", reason)
+        self.assertIn("`bulk_reader_fast` role", reason)
         self.assertIn("spot-check", reason)
 
     def test_sol_model_uses_planner_tier(self):
@@ -79,6 +79,7 @@ class PreToolUseTests(unittest.TestCase):
         )
         reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
         self.assertIn("efficient tier", reason)
+        self.assertIn("`bulk_reader` role", reason)
         self.assertIn("coordination cost", reason)
 
     def test_unknown_model_gets_neutral_guidance(self):

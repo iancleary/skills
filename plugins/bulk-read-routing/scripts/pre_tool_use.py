@@ -37,7 +37,7 @@ def delegation_policy() -> tuple[str, list[dict[str, Any]]]:
         return "explorer", []
     if not isinstance(data, dict):
         return "explorer", []
-    role = data.get("role")
+    role = data.get("defaultRole")
     tiers = data.get("tiers")
     return (
         role if isinstance(role, str) and role.strip() else "explorer",
@@ -62,9 +62,19 @@ def model_tier(model: str, tiers: list[dict[str, Any]]) -> str | None:
     return None
 
 
+def tier_role(tier_name: str | None, default_role: str, tiers: list[dict[str, Any]]) -> str:
+    for tier in tiers:
+        if isinstance(tier, dict) and tier.get("name") == tier_name:
+            role = tier.get("role")
+            if isinstance(role, str) and role.strip():
+                return role
+    return default_role
+
+
 def delegation_guidance(model: str) -> str:
-    role, tiers = delegation_policy()
+    default_role, tiers = delegation_policy()
     tier = model_tier(model, tiers)
+    role = tier_role(tier, default_role, tiers)
     model_label = model or "unknown model"
     if tier == "planner":
         return (

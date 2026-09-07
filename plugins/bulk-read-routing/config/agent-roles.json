@@ -1,0 +1,18 @@
+{
+  "roles": [
+    {
+      "name": "bulk_reader",
+      "description": "Read-only agent for broad file analysis with concise evidence.",
+      "model": "gpt-5.6-terra",
+      "modelReasoningEffort": "medium",
+      "serviceTier": "default"
+    },
+    {
+      "name": "bulk_reader_fast",
+      "description": "Priority read-only agent for broad file analysis with concise evidence.",
+      "model": "gpt-5.6-terra",
+      "modelReasoningEffort": "medium",
+      "serviceTier": "fast"
+    }
+  ]
+}
