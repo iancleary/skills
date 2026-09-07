@@ -38,6 +38,13 @@ class PreToolUseTests(unittest.TestCase):
             "tool_input": {"cmd": command},
         }
 
+    def functions_exec_event(self, code, tool_name: str = "functions.exec") -> dict:
+        return {
+            "tool_name": tool_name,
+            "cwd": str(self.root),
+            "tool_input": code,
+        }
+
     def write_lines(self, name: str, count: int) -> None:
         (self.root / name).write_text("line\n" * count)
 
@@ -64,6 +71,31 @@ class PreToolUseTests(unittest.TestCase):
         )
         self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny")
 
+    def test_blocks_large_cat_nested_in_functions_exec(self):
+        self.write_lines("large.txt", 351)
+        code = (
+            'const r = await tools.exec_command({cmd:"cat large.txt",'
+            'workdir:"/tmp"}); text(r.output);'
+        )
+        payload = json.loads(run_hook(self.functions_exec_event(code)).stdout)
+        self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny")
+
+    def test_blocks_wrapped_functions_exec_input(self):
+        self.write_lines("large.txt", 351)
+        code = 'await tools.exec_command({cmd:"cat large.txt"});'
+        payload = json.loads(
+            run_hook(self.functions_exec_event({"code": code})).stdout
+        )
+        self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny")
+
+    def test_blocks_double_underscore_functions_exec_name(self):
+        self.write_lines("large.txt", 351)
+        code = 'await tools.exec_command({cmd:"cat large.txt"});'
+        payload = json.loads(
+            run_hook(self.functions_exec_event(code, "functions__exec")).stdout
+        )
+        self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny")
+
     def test_allows_small_cat(self):
         self.write_lines("small.txt", 350)
         self.assertEqual(run_hook(self.bash_event("cat small.txt")).stdout, "")
@@ -80,6 +112,18 @@ class PreToolUseTests(unittest.TestCase):
     def test_allows_targeted_sed_from_exec_command(self):
         self.write_lines("large.txt", 500)
         result = run_hook(self.exec_command_event("sed -n '1,40p' large.txt"))
+        self.assertEqual(result.stdout, "")
+
+    def test_allows_targeted_sed_nested_in_functions_exec(self):
+        self.write_lines("large.txt", 500)
+        code = 'await tools.exec_command({cmd:"sed -n \'1,40p\' large.txt"});'
+        result = run_hook(self.functions_exec_event(code))
+        self.assertEqual(result.stdout, "")
+
+    def test_ignores_dynamic_functions_exec_command(self):
+        self.write_lines("large.txt", 500)
+        code = "await tools.exec_command({cmd: commandFromUser});"
+        result = run_hook(self.functions_exec_event(code))
         self.assertEqual(result.stdout, "")
 
     def test_allows_ambiguous_pipeline(self):
