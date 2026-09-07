@@ -31,12 +31,37 @@ class PreToolUseTests(unittest.TestCase):
             "tool_input": {"command": command},
         }
 
+    def exec_command_event(self, command: str, tool_name: str = "exec_command") -> dict:
+        return {
+            "tool_name": tool_name,
+            "cwd": str(self.root),
+            "tool_input": {"cmd": command},
+        }
+
     def write_lines(self, name: str, count: int) -> None:
         (self.root / name).write_text("line\n" * count)
 
     def test_blocks_large_cat(self):
         self.write_lines("large.txt", 351)
         payload = json.loads(run_hook(self.bash_event("cat large.txt")).stdout)
+        self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny")
+
+    def test_blocks_large_cat_from_exec_command(self):
+        self.write_lines("large.txt", 351)
+        payload = json.loads(
+            run_hook(self.exec_command_event("cat large.txt")).stdout
+        )
+        self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny")
+
+    def test_blocks_large_cat_from_namespaced_exec_command(self):
+        self.write_lines("large.txt", 351)
+        payload = json.loads(
+            run_hook(
+                self.exec_command_event(
+                    "cat large.txt", tool_name="functions.exec_command"
+                )
+            ).stdout
+        )
         self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny")
 
     def test_allows_small_cat(self):
@@ -51,6 +76,11 @@ class PreToolUseTests(unittest.TestCase):
     def test_allows_targeted_sed(self):
         self.write_lines("large.txt", 500)
         self.assertEqual(run_hook(self.bash_event("sed -n '1,40p' large.txt")).stdout, "")
+
+    def test_allows_targeted_sed_from_exec_command(self):
+        self.write_lines("large.txt", 500)
+        result = run_hook(self.exec_command_event("sed -n '1,40p' large.txt"))
+        self.assertEqual(result.stdout, "")
 
     def test_allows_ambiguous_pipeline(self):
         self.write_lines("large.txt", 500)
