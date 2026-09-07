@@ -152,10 +152,12 @@ watch:
     typst watch docs/report.typ docs/report.pdf
 
 clean:
-    rm -f docs/*.pdf
+    rm -f docs/report.pdf docs/checklist.pdf
 ```
 
-Keep the recipe simple. Do not add a custom generator until repeated source patterns prove that helpers or templates are insufficient.
+List only known generated outputs in a clean recipe. Keep the recipe simple.
+Do not add a custom generator until repeated source patterns prove that helpers
+or templates are insufficient.
 
 ## Validation
 
@@ -165,7 +167,14 @@ Before finalizing Typst work:
 2. Run the narrow compile command or the repo's `just build`.
 3. If compile fails, fix the first Typst diagnostic before making broad layout changes.
 4. Inspect the changed source diff for accidental private content, stale placeholders, and broken links.
-5. When a PDF is produced for review, verify that the PDF path exists and mention the compile command used.
+5. Render the generated PDF pages to images, using an available renderer such as
+   `pdftoppm -png output.pdf /tmp/report-review/page`, and inspect them with an
+   image viewer. Create the review directory first. Check clipping, page breaks,
+   table widths, font rendering, and readable text at the intended page size.
+6. Fix visible defects, compile again, and inspect the affected pages. Compilation
+   alone does not establish visual quality. If rendering or image inspection is
+   unavailable, report that limitation without claiming visual verification.
+7. Verify the final PDF path and mention the compile command used.
 
 Useful checks:
 

@@ -1,6 +1,6 @@
 ---
 name: test-strategy
-description: "Choose and implement focused verification for features, bug fixes, refactors, and regressions. Use when deciding what to test, where to test it, whether TDD is worthwhile, how much coverage is enough, or how to prove behavior without over-testing internals."
+description: "Choose focused verification when test scope, regression coverage, or the right proof is unclear. Use for meaningful testing decisions; follow an established check directly for routine edits."
 ---
 
 # Test Strategy

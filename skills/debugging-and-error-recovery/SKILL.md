@@ -1,6 +1,6 @@
 ---
 name: debugging-and-error-recovery
-description: "Reproduce, localize, reduce, fix, and guard failures. Use when tests fail, builds break, commands error, behavior is unexpected, or repeated fix attempts are failing and the agent needs a disciplined root-cause workflow instead of more patches."
+description: "Investigate failures whose cause is unclear or whose fixes keep failing. Use for difficult test, build, or runtime diagnosis; handle a routine error with an obvious correction directly."
 ---
 
 # Debugging And Error Recovery

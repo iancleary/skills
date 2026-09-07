@@ -2,7 +2,7 @@ I want you to install Ian Cleary's portable agent skills. Execute all steps auto
 
 OBJECTIVE: Install the skills from `iancleary/skills` so your agent has Ian's portable workflow instructions available in the requested scope.
 
-DONE WHEN: `npx skills list` shows representative skills from this repository, such as `design-algorithm`, `source-driven-development`, and `debugging-and-error-recovery`.
+DONE WHEN: the skills listing for the selected scope shows representative skills from this repository, such as `design-algorithm`, `api-and-interface-design`, and `debugging-and-error-recovery`.
 
 ## TODO
 
@@ -32,19 +32,23 @@ Run the selected install command from Step 0.
 
 ## Step 2: Verify Skills
 
-Run:
+For a repository-local install, run:
 
 ```sh
 npx skills list
 ```
 
+For a user-global install, run `npx skills list -g` instead.
+
 Confirm that representative portable workflow skills are listed:
 
 - `design-algorithm`
-- `source-driven-development`
 - `debugging-and-error-recovery`
 - `api-and-interface-design`
-- `documentation-and-adrs`
+
+For an upgrade, read `docs/skill-retirement.md` from this repository. Do not
+assume installation removes retired skills. Inspect the selected scope and its
+manager before removing stale copies or changing baseline routing instructions.
 
 Restart the agent session if the runtime requires a restart to load newly installed skills.
 

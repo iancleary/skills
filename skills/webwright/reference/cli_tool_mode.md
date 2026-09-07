@@ -14,10 +14,10 @@ Use CLI tool mode when:
 
 Otherwise, stay in one-shot mode.
 
-## `plan.md` Parameters
+## Parameters
 
-Before writing the script, identify every requirement the user could plausibly
-vary and list it in `plan.md` in addition to the normal critical points:
+Identify the inputs the user needs to vary and document them in CLI help. For a
+larger interface, a parameter table in `plan.md` can help:
 
 ```markdown
 # Task
@@ -76,14 +76,14 @@ The module must be import-safe:
 
 ## Action-Log Parameter Echo
 
-The first line written to `final_script_log.txt` after reset must be:
+Record resolved, non-sensitive parameters in the run evidence. For example:
 
 ```text
 step 0 params: arg_a=<value> arg_b=<value>
 ```
 
-List every resolved parameter as `name=value` so the verification pass can see
-what inputs produced the result.
+Record the inputs needed to reproduce the result; omit credentials and private
+values. The log filename and format are examples.
 
 ## Verification
 
@@ -113,16 +113,17 @@ print([n for n in dir(m) if not n.startswith('_')])"
 
 Complete CLI tool mode only when all are true:
 
-1. `plan.md` contains `# Parameters` and `# Critical Points`.
+1. The requested parameters and requirements are documented in help or a plan.
 2. `final_script.py` defines exactly one reusable function with a Google-style
    `Args:` docstring.
 3. Every parameter maps one-to-one to a function argument and an argparse flag.
 4. The script is import-safe.
 5. `uvx --with playwright python final_script.py` with no arguments reproduces
    the task.
-6. Every CP is verified against screenshots or the action log.
-7. `step 0 params: ...` is present in `final_script_log.txt`.
+6. Every requirement is verified against task-appropriate execution evidence.
+7. The evidence identifies the non-sensitive inputs used.
 8. The user has the final datum and the `--help` output.
 
 If any item is false, diagnose, fix the script without breaking the CLI shape,
-rerun in the next run folder, and re-verify.
+rerun when safe, and re-verify. Separate run folders are optional. Report any
+unresolved blocker when further attempts cannot usefully resolve it.

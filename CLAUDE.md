@@ -38,6 +38,11 @@ When editing a skill:
 4. Keep the body short, imperative, and verifiable.
 5. Validate the skill before committing.
 
+Keep triggers narrow. Follow explicit-request boundaries even when the runtime
+does not use Codex's `agents/openai.yaml` invocation policy. When retiring skills,
+follow the migration guidance in `docs/skill-retirement.md` and remove stale
+references from active repository documentation.
+
 Use the skill validator available in your environment. For Codex's `skill-creator` skill, that is usually:
 
 ```sh
