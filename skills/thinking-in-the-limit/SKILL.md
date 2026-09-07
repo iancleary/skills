@@ -37,6 +37,8 @@ Account for transformation, reliability, distribution, and risk before treating
 the difference between input cost and price as waste. Missing cost data is an
 uncertainty, not evidence of excess margin.
 
+> This is called the "Idiot Index" by Elon Musk.
+
 ### 2. Scale in the limit
 
 Choose plausible scales for the system, such as prototype, expected operation,
