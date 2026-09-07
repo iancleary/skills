@@ -37,15 +37,22 @@ class ReleaseContractTests(unittest.TestCase):
             prefix = ("uv", "run", "scripts/release.py")
             plan = json.loads(run(*prefix, "plan", "--json").stdout)
             self.assertEqual(plan["current_version"], "2026.09.01.0")
+            self.assertIsNone(plan["ready"])
+            self.assertFalse(plan["checks_verified"])
             self.assertRegex(plan["next_version"], r"^\d{4}\.\d{2}\.\d{2}\.\d+$")
             checks = json.loads(run(*prefix, "check", "--json").stdout)
             self.assertTrue(checks["ready"])
             result = json.loads(run(*prefix, "run", "--dry-run", "--version",
-                                    plan["next_version"], "--json").stdout)
+                                    plan["next_version"], "--expected-head", plan["target_commit"],
+                                    "--expected-config", plan["config_sha256"], "--json").stdout)
             self.assertTrue(result["executed"])
             self.assertEqual(run("git", "status", "--porcelain").stdout, "")
             self.assertEqual(run("git", "tag", "--list").stdout.strip(), "2026.09.01.0")
             self.assertEqual(run("git", "ls-remote", "--tags", "origin").stdout, "")
+            for version in ("1.2.3", "2026.02.30.0"):
+                failure = run(*prefix, "run", "--dry-run", "--version", version, "--json", ok=False)
+                self.assertNotEqual(failure.returncode, 0)
+                self.assertIn("error", json.loads(failure.stdout))
             run("git", "switch", "-c", "wrong-branch")
             failure = run(*prefix, "run", "--dry-run", "--version",
                           plan["next_version"], "--json", ok=False)

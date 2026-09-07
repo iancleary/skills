@@ -106,8 +106,8 @@ Use the checked-in Python runner through `uv`:
 ```sh
 uv run scripts/release.py check --json
 uv run scripts/release.py plan --json
-uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --json
-uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --json
+uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
 ```
 
 See [`docs/release.md`](docs/release.md).

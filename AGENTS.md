@@ -77,8 +77,8 @@ Use the repo-local release runner:
 ```sh
 uv run scripts/release.py check --json
 uv run scripts/release.py plan --json
-uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --json
-uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --json
+uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
 ```
 
 For ordinary release requests, use `release-runner` from `iancleary/release-skills` and the checked-in contract. Use `create-release-process` for maintenance. Versions use UTC `YYYY.MM.DD.XX`, where `XX` starts at `0` each day. Read `docs/release.md` for version selection and runner provenance.

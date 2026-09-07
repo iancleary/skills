@@ -1,21 +1,28 @@
-# Runner source: iancleary/release-skills v0.2.0.
+# Runner source is pinned in [runner_source] below.
+[runner_source]
+repository = "https://github.com/iancleary/release-skills"
+revision = "ec30a7d99d387323c068d1e9ea97259258d413a1"
+sha256 = "fbda2341449e776e6c0b15f70492ddaed34614a43c4598acc408ab4026dc096f"
+
 [release]
+runner_protocol = "prepared-v1"
 name = "skills"
 runner = [
   "uv", "run", "scripts/release.py", "tag-release",
   "--provider", "github",
   "--tag-prefix", "",
   "--branch", "main",
-  "--check", "uv run scripts/release_policy.py check",
-  "--check", "uv run --python 3.11 python -B -m unittest discover -s plugins/bulk-read-routing/scripts -p test_*.py",
 ]
 dry_run_args = ["--dry-run"]
 current_version_command = ["uv", "run", "scripts/release_policy.py", "current"]
 next_version_command = ["uv", "run", "scripts/release_policy.py", "next"]
+validate_version_command = ["uv", "run", "scripts/release_policy.py", "validate"]
 publish = true
 
 [checks]
 commands = [
+  ["uv", "run", "scripts/release_policy.py", "check"],
   ["git", "diff", "--check"],
+  ["uv", "run", "--python", "3.11", "python", "-B", "scripts/test_release_policy.py"],
   ["uv", "run", "--python", "3.11", "python", "-B", "-m", "unittest", "discover", "-s", "plugins/bulk-read-routing/scripts", "-p", "test_*.py"],
 ]
