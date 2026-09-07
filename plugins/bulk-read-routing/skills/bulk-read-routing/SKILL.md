@@ -23,4 +23,6 @@ final verification with the primary agent. Do not delegate a small read when
 coordination overhead exceeds the likely context savings.
 
 The hook is conservative. It blocks recognizable full-file reads only.
-Ambiguous shell commands and bounded reads pass through.
+Ambiguous shell commands and bounded reads pass through. When the hook cannot
+resolve a relative file against its working directory, retry with an absolute
+path so it can verify the file size.

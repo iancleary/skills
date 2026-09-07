@@ -63,6 +63,10 @@ recognizable full-file reads above 350 lines and directs the agent to a bounded
 read or subagent summary. Set `BULK_READ_LINE_THRESHOLD` to a positive integer
 before starting Codex to choose another threshold.
 
+If a command runs with a tool-specific working directory, use an absolute file
+path for an unbounded read. This lets the hook verify the file size before it
+allows the command.
+
 ## Releases
 
 This repo uses UTC calendar versions in `YYYY.MM.DD.XX` format, with `XX` starting at `0` each day.

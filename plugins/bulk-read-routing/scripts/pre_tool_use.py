@@ -105,6 +105,7 @@ def blocked_paths(event: dict[str, Any]) -> list[Path]:
     tool_name = str(event.get("tool_name", ""))
     tool_input = event.get("tool_input")
     candidates: list[Path] = []
+    block_unresolved = False
     normalized_tool_name = tool_name.lower().replace("__", ".")
     shell_input_key = None
     if tool_name == "Bash":
@@ -113,9 +114,11 @@ def blocked_paths(event: dict[str, Any]) -> list[Path]:
         shell_input_key = "cmd"
 
     if normalized_tool_name == "functions.exec":
+        block_unresolved = True
         for command in functions_exec_commands(tool_input):
             candidates.extend(shell_read_paths(command, cwd))
     elif shell_input_key is not None and isinstance(tool_input, dict):
+        block_unresolved = True
         command = tool_input.get(shell_input_key)
         if isinstance(command, str):
             candidates.extend(shell_read_paths(command, cwd))
@@ -124,7 +127,12 @@ def blocked_paths(event: dict[str, Any]) -> list[Path]:
         if path is not None:
             candidates.append(path)
     limit = threshold()
-    return [path for path in candidates if path.is_file() and line_count_exceeds(path, limit)]
+    return [
+        path
+        for path in candidates
+        if (path.is_file() and line_count_exceeds(path, limit))
+        or (block_unresolved and not path.exists())
+    ]
 
 
 def main() -> int:
@@ -139,8 +147,10 @@ def main() -> int:
         return 0
     names = ", ".join(str(path) for path in paths)
     reason = (
-        f"Full-file read blocked above {threshold()} lines: {names}. "
-        "Use rg and a bounded sed range, or delegate a concise summary with file and line references."
+        f"Unbounded full-file read blocked: {names}. The file exceeds {threshold()} "
+        "lines or could not be sized from the hook working directory. Use an absolute "
+        "path, rg and a bounded sed range, or delegate a concise summary with file and "
+        "line references."
     )
     print(
         json.dumps(
