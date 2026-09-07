@@ -1,8 +1,9 @@
+# Release workflow: https://github.com/iancleary/release-skills
 # Runner source is pinned in [runner_source] below.
 [runner_source]
 repository = "https://github.com/iancleary/release-skills"
-revision = "ec30a7d99d387323c068d1e9ea97259258d413a1"
-sha256 = "fbda2341449e776e6c0b15f70492ddaed34614a43c4598acc408ab4026dc096f"
+revision = "d37aca64142f292af766c5035b2e9ae515348980"
+sha256 = "10869f02fe8a1190e75cc3e70eef85012e89dba52b89d865f79a6a9fb317139e"
 
 [release]
 runner_protocol = "prepared-v1"

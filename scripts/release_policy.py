@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Release workflow: https://github.com/iancleary/release-skills
+# Repository-specific policy for the shared release runner.
 # /// script
 # requires-python = ">=3.11"
 # dependencies = []

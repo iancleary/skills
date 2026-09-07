@@ -4,9 +4,9 @@ This repository uses UTC CalVer `YYYY.MM.DD.XX`, with a daily serial starting
 at zero. Tags remain the version source.
 
 `release.toml` uses the tag-only template from `iancleary/release-skills`.
-Its runner_source table pins the exact source commit and SHA-256 included in
-`release-skills v1.0.0`. `scripts/release.py` is an unchanged copy of that
-release's bundled runner.
+Its runner_source table pins the exact source commit and SHA-256.
+`scripts/release.py` is an unchanged copy of that commit's bundled runner,
+including the upstream URL attribution added after `release-skills v1.0.1`.
 `scripts/release_policy.py` owns version inference and the requirement for a
 clean main checkout matching origin/main.
 
