@@ -49,7 +49,7 @@ def resolve_path(value: Any, cwd: Path) -> Path | None:
     return path if path.is_absolute() else cwd / path
 
 
-def bash_read_paths(command: str, cwd: Path) -> list[Path]:
+def shell_read_paths(command: str, cwd: Path) -> list[Path]:
     try:
         words = shlex.split(command)
     except ValueError:
@@ -80,10 +80,16 @@ def blocked_paths(event: dict[str, Any]) -> list[Path]:
     tool_name = str(event.get("tool_name", ""))
     tool_input = event.get("tool_input")
     candidates: list[Path] = []
-    if tool_name == "Bash" and isinstance(tool_input, dict):
-        command = tool_input.get("command")
+    shell_input_key = None
+    if tool_name == "Bash":
+        shell_input_key = "command"
+    elif tool_name.lower().split(".")[-1] == "exec_command":
+        shell_input_key = "cmd"
+
+    if shell_input_key is not None and isinstance(tool_input, dict):
+        command = tool_input.get(shell_input_key)
         if isinstance(command, str):
-            candidates.extend(bash_read_paths(command, cwd))
+            candidates.extend(shell_read_paths(command, cwd))
     else:
         path = direct_read_path(event, cwd)
         if path is not None:
