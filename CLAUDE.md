@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-This repository contains portable agent skills.
+This repository contains portable agent skills and small plugins that make a
+skill's workflow enforceable.
 
 Start by reading `AGENTS.md`. Follow it as the primary repo maintenance policy.
 
@@ -19,6 +20,9 @@ Use `iancleary/forge` for executable tooling:
 - installers and release scripts
 - Forge-managed assets
 - command specs and implementation docs
+
+A skill or plugin can keep a small executable helper here when the helper is
+inseparable from that workflow and has no useful standalone command surface.
 
 This repo is the intended home for portable non-Forge-CLI workflow skills once Forge policy can install and pin it for a machine or repo. Keep Forge-coupled CLI skills in `iancleary/forge`.
 

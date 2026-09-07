@@ -1,0 +1,17 @@
+{
+  "description": "Block recognizable full-file reads above the configured line threshold.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$PLUGIN_ROOT/scripts/pre_tool_use.py\"",
+            "timeout": 5,
+            "statusMessage": "Checking bulk read size"
+          }
+        ]
+      }
+    ]
+  }
+}
