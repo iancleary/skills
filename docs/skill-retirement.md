@@ -1,6 +1,7 @@
 # Retired skills
 
-The operational portfolio contains 13 skills. These five skills no longer ship:
+The first retirement pass reduced the portfolio from 18 to 13 skills. These five
+skills no longer ship:
 
 | Retired skill | Replacement |
 | --- | --- |
@@ -9,6 +10,9 @@ The operational portfolio contains 13 skills. These five skills no longer ship:
 | `git-forge-body-file` | Baseline hosted-Git rules, including the Gitea details below. |
 | `source-driven-development` | Baseline evidence rules and product-specific documentation workflows. |
 | `learning-systems` | An ordinary learning request with a topic-appropriate study structure. |
+
+A later removal of four tool-specific bundles leaves nine skills. See
+[tool-skill recovery instructions](tools-skills-deletion.md).
 
 No replacement skill is required for each retired skill. Preserve the following
 small rules in the baseline's owning source when updating that baseline:
