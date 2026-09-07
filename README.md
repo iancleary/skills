@@ -114,22 +114,26 @@ Included skills:
 
 - `api-and-interface-design`
 - `chrome-devtools-mcp`
-- `code-simplification`
 - `codegraph`
 - `cut-release`
 - `debugging-and-error-recovery`
 - `design-algorithm`
-- `documentation-and-adrs`
-- `git-forge-body-file`
-- `learning-systems`
 - `librarian`
 - `schemdraw`
 - `security-and-hardening`
-- `source-driven-development`
 - `test-strategy`
 - `thinking-in-the-limit`
 - `typst-documents`
 - `webwright`
+
+`thinking-in-the-limit` and `webwright` are explicit-request workflows. Their
+Codex metadata disables implicit invocation; invoke them by name when needed.
+Other agents should follow the same boundary described in each skill.
+
+Five general-purpose skills have been retired. See
+[`docs/skill-retirement.md`](docs/skill-retirement.md) for the replacement
+guidance and installed-copy migration steps. Updating this repository does not
+automatically remove existing installations or baseline routing references.
 
 ## Repository Shape
 
@@ -147,7 +151,7 @@ plugins/
 skills/
   design-algorithm/
     SKILL.md
-  source-driven-development/
+  api-and-interface-design/
     SKILL.md
   ...
 ```

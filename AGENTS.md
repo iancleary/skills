@@ -37,6 +37,13 @@ Forge-specific skills such as `forge-tools` and `forge-cli` belong only in `ianc
 - keep the skill body concise and procedural
 - prefer command contracts, decision rules, and verification checks over generic advice
 - do not add scripts, references, or assets unless the skill or plugin actually needs them
+- keep automatic triggers narrow; explicit-request workflows may set
+  `policy.allow_implicit_invocation: false` in `agents/openai.yaml`
+- when retiring a skill, remove active references and document installed-copy
+  migration; baseline routing managed in another repo must be updated there
+
+For retired skills and preserved baseline guidance, see
+[`docs/skill-retirement.md`](docs/skill-retirement.md).
 
 ## Repository Docs
 

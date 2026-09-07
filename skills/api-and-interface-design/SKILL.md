@@ -1,11 +1,14 @@
 ---
 name: api-and-interface-design
-description: "Design or review stable APIs, CLI command surfaces, JSON contracts, module boundaries, error semantics, and compatibility behavior before implementation. Use when adding or changing an interface; use design-algorithm first if the need for the interface is still in question."
+description: "Design or review public or shared API, CLI, and data contracts when callers depend on stable inputs, outputs, errors, or compatibility. Use for new shared interfaces or contract changes, not routine internal edits."
 ---
 
 # API And Interface Design
 
 Make the contract explicit before implementation details harden around it.
+
+Use this for contracts shared across callers or published to users. If the need
+for the interface remains unresolved, use `design-algorithm` when available.
 
 This skill is adapted from `addyosmani/agent-skills`; see `THIRD_PARTY_NOTICES.md` for upstream provenance and MIT license notice.
 
@@ -23,15 +26,15 @@ This skill is adapted from `addyosmani/agent-skills`; see `THIRD_PARTY_NOTICES.m
 5. Decide which invalid states should be rejected at the boundary.
 6. Update docs and tests with the contract, not just the implementation.
 
-## Forge Bias
+## CLI Contracts
 
-For Forge CLIs:
+For commands used by automation:
 
-- keep output JSON-first and stable
+- preserve stable machine-readable output
 - use explicit verbs for writes
 - keep destructive actions behind explicit flags
 - avoid hidden Git, browser, or network side effects
-- prefer singular top-level resource nouns when adding command surface
+- follow the existing command naming convention
 
 ## Output
 

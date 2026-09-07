@@ -1,6 +1,6 @@
 ---
 name: thinking-in-the-limit
-description: Analyze a design, product, process, or business model by forcing first-principles questions about raw-material cost, supplier layers, scale behavior, physical limits, tool limits, and the gap between current reality and the theoretical best target. Use this when the user needs a deeper systems or design critique, not a surface-level optimization list.
+description: Use when the user explicitly requests thinking-in-the-limit or a first-principles limits analysis of a concrete system. Examine relevant costs, scale, fundamental constraints, and the gap between current capability and an ideal target.
 ---
 
 # Thinking In The Limit
@@ -9,10 +9,8 @@ Use this skill when the user wants a design reviewed from the bottom up: what it
 
 ## Use this when
 
-- the user is evaluating a product, design, process, or manufacturing system
-- you need to separate fundamental constraints from accidental implementation choices
-- cost structure, scale, or physical feasibility matter
-- the user wants a first-principles critique rather than a conventional feature review
+- the user explicitly invokes this skill or requests a first-principles limits analysis
+- there is a concrete product, design, process, or system to evaluate
 
 ## Do not use this when
 
@@ -22,9 +20,10 @@ Use this skill when the user wants a design reviewed from the bottom up: what it
 
 ## Core lenses
 
-Apply these lenses in order.
+Select the lenses that help answer the user's question. State which assumptions
+and scale measures fit the system; omit irrelevant lenses.
 
-### 1. Idiot index
+### 1. Cost structure
 
 Ask:
 
@@ -32,15 +31,19 @@ Ask:
 - how many suppliers, intermediaries, or toll collectors sit in the chain?
 - who adds real transformation and who mainly takes margin?
 
-The point is not cynicism. The point is to find where cost and complexity enter the system.
+Use raw-material comparisons for physical products when relevant. For software
+or services, examine applicable inputs such as compute, labor, or coordination.
+Account for transformation, reliability, distribution, and risk before treating
+the difference between input cost and price as waste. Missing cost data is an
+uncertainty, not evidence of excess margin.
+
+> This is called the "Idiot Index" by Elon Musk.
 
 ### 2. Scale in the limit
 
-Ask the same design question at three scales:
-
-- one unit
-- one thousand units
-- one million units
+Choose plausible scales for the system, such as prototype, expected operation,
+and a credible growth case. Units may be devices, requests, users, or team size.
+Use one, one thousand, and one million units only when those scales are useful.
 
 At each scale, ask:
 
@@ -87,22 +90,12 @@ Treat this as a map of missing prerequisites, not a hand-wave.
 
 ## Output contract
 
-Return a compact analysis with:
-
-1. `System under review`
-   - what is being analyzed and what job it must do
-2. `Idiot index`
-   - raw-material/core-input cost vs delivered value, key intermediaries, and suspected margin layers
-3. `Limit table`
-   - one unit / one thousand / one million with dominant constraints at each scale
-4. `Ideal target`
-   - the theoretical best arrangement or performance target
-5. `Current bottlenecks`
-   - the real limiting tools, processes, or assumptions
-6. `Impossible -> possible`
-   - what would have to change to unlock the next regime
-7. `Conclusion`
-   - whether the problem is fundamentally limited or mainly poorly designed today
+Return a compact analysis of the system's job, relevant limits, current
+bottlenecks, and changes that could improve performance. Use a scale table only
+when comparing scales helps. Distinguish measured facts, estimates, and
+hypotheses. Identify the next measurement that would most reduce uncertainty.
+Do not force a verdict of fundamental limits versus poor design when evidence
+supports a mixture or remains incomplete.
 
 ## Tone
 

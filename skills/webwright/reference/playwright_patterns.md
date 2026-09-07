@@ -1,12 +1,12 @@
 # Playwright Patterns
 
-These are the canonical patterns for Webwright-style runs. Execute them through
-`uvx`, one command at a time, then observe the output before continuing.
+These are adaptable examples for Webwright runs. Execute scripts through `uvx`
+and inspect results before dependent actions. The shown run folders, log names,
+and screenshot names are optional conventions.
 
 ## Browser Launch Skeleton
 
-Use Playwright Firefox by default. Some sites reject Playwright Chromium due to
-TLS or HTTP/2 fingerprinting, while Firefox loads the same pages cleanly.
+Use the requested browser. Firefox is a default when none is specified.
 
 ```bash
 uvx --with playwright python - <<'PY'
@@ -44,10 +44,9 @@ PY
 Rules:
 
 - run scratch scripts and final scripts with `uvx --with playwright python`
-- always set `viewport={"width": 1280, "height": 1800}`
-- never call `page.screenshot(full_page=True)`
-- each Playwright run is fresh: navigate from the start URL, reapply filters,
-  and reconstruct state in code
+- choose a viewport and screenshot scope that make relevant state legible
+- reruns must work from documented starting state, including authorized login
+  prerequisites
 
 ## Target Elements With Role And Name
 
@@ -99,7 +98,7 @@ Guidelines:
 
 ## Final-Script Instrumentation
 
-`final_runs/run_<id>/final_script.py` must:
+For a task that benefits from screenshots and logs, the script can:
 
 - write screenshots to
   `final_runs/run_<id>/screenshots/final_execution_<step>_<action>.png`

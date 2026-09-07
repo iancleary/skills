@@ -1,6 +1,6 @@
 ---
 name: security-and-hardening
-description: "Review and harden code that touches trust boundaries: user input, auth, secrets, tokens, files, shell commands, Git/GitHub writes, network calls, permissions, dependency execution, or persisted state. Use for concrete security risk, not generic alarmism."
+description: "Review concrete security risks or changes to trust boundaries, such as untrusted input reaching execution, secrets, or privileged operations. Use for requested security reviews or meaningful boundary changes, not routine file or command use."
 ---
 
 # Security And Hardening
