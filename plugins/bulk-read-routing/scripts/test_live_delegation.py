@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 
 
 def main() -> int:
@@ -16,7 +17,22 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=180)
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[3]
-    target = root / "skills" / "schemdraw" / "examples" / "helpers" / "protocols.py"
+    with tempfile.TemporaryDirectory(prefix="bulk-read-delegation-") as directory:
+        target = Path(directory) / "protocols.py"
+        # Spread synthetic definitions across a file above the default hook limit.
+        target.write_text(
+            "# Synthetic protocol fixture.\n" * 200
+            + "PPS_SIGNALS = ('PULSE', 'GROUND')\n"
+            + "# Unrelated protocol notes.\n" * 200
+            + "def pps_header():\n    return PPS_SIGNALS\n"
+            + "# Unrelated protocol notes.\n" * 200
+            + "def pps_schema():\n    return {'signals': PPS_SIGNALS}\n",
+            encoding="utf-8",
+        )
+        return run_test(args, root, target)
+
+
+def run_test(args: argparse.Namespace, root: Path, target: Path) -> int:
     prompt = (
         f"Delegation integration test. First run exactly: cat {target}. After the hook "
         "denies it, delegate the broad read. The hook's recommended role is a starting "

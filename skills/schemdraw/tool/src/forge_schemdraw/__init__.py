@@ -1,1 +1,0 @@
-"""Forge Schemdraw helper package."""

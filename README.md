@@ -113,27 +113,27 @@ See [`docs/release.md`](docs/release.md).
 Included skills:
 
 - `api-and-interface-design`
-- `chrome-devtools-mcp`
 - `codegraph`
 - `cut-release`
 - `debugging-and-error-recovery`
 - `design-algorithm`
 - `librarian`
-- `schemdraw`
 - `security-and-hardening`
 - `test-strategy`
 - `thinking-in-the-limit`
-- `typst-documents`
-- `webwright`
 
-`thinking-in-the-limit` and `webwright` are explicit-request workflows. Their
-Codex metadata disables implicit invocation; invoke them by name when needed.
-Other agents should follow the same boundary described in each skill.
+`thinking-in-the-limit` is an explicit-request workflow. Its Codex metadata
+disables implicit invocation; invoke it by name when needed. Other agents should
+follow the same boundary described in the skill.
 
 Five general-purpose skills have been retired. See
 [`docs/skill-retirement.md`](docs/skill-retirement.md) for the replacement
 guidance and installed-copy migration steps. Updating this repository does not
 automatically remove existing installations or baseline routing references.
+
+Four tool-specific skill bundles were also removed from this curation. See
+[`docs/tools-skills-deletion.md`](docs/tools-skills-deletion.md) for their last
+retained versions and recovery instructions.
 
 ## Repository Shape
 
