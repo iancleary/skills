@@ -79,14 +79,17 @@ just test-live-delegation
 
 This test consumes model capacity and creates a Codex thread. It passes only
 when the hook blocks the read, a collaboration event contains a real receiver
-thread for `bulk_reader_fast` or `explorer`, and the parent reports success.
+thread for a delegated role, and the parent reports success. The hook recommends
+a role, but the driving agent chooses the delegation and fallback path. It can
+recover from administrative failures, such as spawn errors and timeouts, and
+semantic failures, such as incomplete or incorrect results.
 
 Review and trust the plugin hook with `/hooks` in Codex. The hook blocks
 recognizable full-file reads above 350 lines and directs the agent to a bounded
 read or subagent summary. Its model-tier policy in
 `plugins/bulk-read-routing/config/delegation.json` recommends the stable
-`explorer` role more strongly for planner models such as Astra and Sol. Codex
-agent configuration owns the model assigned to that role. Set
+`bulk_reader_fast` role more strongly for planner models such as Astra and Sol.
+Codex agent configuration owns the model assigned to that role. Set
 `BULK_READ_LINE_THRESHOLD` to a positive integer before starting Codex to choose
 another threshold.
 

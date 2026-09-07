@@ -19,11 +19,14 @@ def main() -> int:
     target = root / "skills" / "schemdraw" / "examples" / "helpers" / "protocols.py"
     prompt = (
         f"Delegation integration test. First run exactly: cat {target}. After the hook "
-        "denies it, call the collaboration spawn_agent tool with agent_type "
-        "bulk_reader_fast and ask it to identify PPS-related definitions with file line "
-        "references. Do not call wait until spawn_agent returns a receiver agent ID. If "
-        "that spawn or task fails, call spawn_agent with agent_type explorer for the same "
-        "task. Do not perform the analysis yourself. Spot-check only the returned range. End "
+        "denies it, delegate the broad read. The hook's recommended role is a starting "
+        "point, but you are the driving agent: choose the role and recovery path. Ask the "
+        "agent to identify PPS-related definitions with file line references. A failed "
+        "attempt includes spawn errors, unavailable roles, tool errors, timeouts, malformed "
+        "responses, and answers that fail the task. Retry, choose another role, or use "
+        "bounded reads as appropriate. Do not claim delegation unless spawn_agent returns "
+        "a receiver agent ID and that agent returns evidence. Spot-check only the returned "
+        "range. End "
         "with exactly DELEGATED:<role>:PASS only after a subagent returns evidence; "
         "otherwise end DELEGATED:none:FAIL."
     )
@@ -61,8 +64,18 @@ def main() -> int:
         and event.get("item", {}).get("type") == "agent_message"
     ]
     final = final_messages[-1] if final_messages else ""
-    role_named = "bulk_reader_fast" in json.dumps(delegated) or "explorer" in json.dumps(delegated)
-    passed = blocked and bool(delegated) and role_named and final.startswith("DELEGATED:") and final.endswith(":PASS")
+    final_parts = final.split(":")
+    final_shape_valid = len(final_parts) == 3
+    final_role = final_parts[1] if final_shape_valid else ""
+    role_named = bool(final_role) and final_role in json.dumps(delegated)
+    passed = (
+        blocked
+        and bool(delegated)
+        and role_named
+        and final_shape_valid
+        and final_parts[0] == "DELEGATED"
+        and final_parts[2] == "PASS"
+    )
     if not passed:
         print(
             json.dumps(

@@ -81,17 +81,22 @@ def delegation_guidance(model: str) -> str:
             f"Current model {model_label} matches the planner tier. Delegate broad "
             f"read-only analysis to the `{role}` role with a concrete question. "
             "Require concise findings with file and line references, then spot-check "
-            "the relevant ranges."
+            "the relevant ranges. You remain responsible for the task and may retry, "
+            "choose another role, or use bounded reads when delegation fails for any "
+            "reason, including unavailable agents, tool errors, timeouts, or an "
+            "inadequate result."
         )
     if tier == "efficient":
         return (
             f"Current model {model_label} matches the efficient tier. Prefer rg and "
             f"bounded reads. Delegate to the `{role}` role only when broad understanding "
-            "is worth the coordination cost."
+            "is worth the coordination cost. You remain responsible for choosing and "
+            "recovering from the delegation path."
         )
     return (
         f"Current model {model_label} has no configured tier. For broad understanding, "
-        f"consider the `{role}` role; otherwise use rg and bounded reads."
+        f"consider the `{role}` role; otherwise use rg and bounded reads. The role is a "
+        "recommendation, and you remain responsible for the task and its fallback path."
     )
 
 
