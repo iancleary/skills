@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import fnmatch
 import json
 import os
 from pathlib import Path
@@ -18,6 +19,7 @@ EXEC_COMMAND_LITERAL = re.compile(
     r"\btools\.exec_command\s*\(\s*\{(?:(?!\}\s*\)).){0,4096}?\bcmd\s*:\s*",
     re.DOTALL,
 )
+DELEGATION_CONFIG = Path(__file__).resolve().parent.parent / "config" / "delegation.json"
 
 
 def threshold() -> int:
@@ -26,6 +28,61 @@ def threshold() -> int:
     except ValueError:
         return DEFAULT_THRESHOLD
     return value if value > 0 else DEFAULT_THRESHOLD
+
+
+def delegation_policy() -> tuple[str, list[dict[str, Any]]]:
+    try:
+        data = json.loads(DELEGATION_CONFIG.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return "explorer", []
+    if not isinstance(data, dict):
+        return "explorer", []
+    role = data.get("role")
+    tiers = data.get("tiers")
+    return (
+        role if isinstance(role, str) and role.strip() else "explorer",
+        tiers if isinstance(tiers, list) else [],
+    )
+
+
+def model_tier(model: str, tiers: list[dict[str, Any]]) -> str | None:
+    normalized = model.lower()
+    for tier in tiers:
+        if not isinstance(tier, dict) or not isinstance(tier.get("name"), str):
+            continue
+        patterns = tier.get("modelPatterns")
+        if not isinstance(patterns, list):
+            continue
+        if any(
+            isinstance(pattern, str)
+            and fnmatch.fnmatchcase(normalized, pattern.lower())
+            for pattern in patterns
+        ):
+            return tier["name"]
+    return None
+
+
+def delegation_guidance(model: str) -> str:
+    role, tiers = delegation_policy()
+    tier = model_tier(model, tiers)
+    model_label = model or "unknown model"
+    if tier == "planner":
+        return (
+            f"Current model {model_label} matches the planner tier. Delegate broad "
+            f"read-only analysis to the `{role}` role with a concrete question. "
+            "Require concise findings with file and line references, then spot-check "
+            "the relevant ranges."
+        )
+    if tier == "efficient":
+        return (
+            f"Current model {model_label} matches the efficient tier. Prefer rg and "
+            f"bounded reads. Delegate to the `{role}` role only when broad understanding "
+            "is worth the coordination cost."
+        )
+    return (
+        f"Current model {model_label} has no configured tier. For broad understanding, "
+        f"consider the `{role}` role; otherwise use rg and bounded reads."
+    )
 
 
 def line_count_exceeds(path: Path, limit: int) -> bool:
@@ -146,11 +203,11 @@ def main() -> int:
     if not paths:
         return 0
     names = ", ".join(str(path) for path in paths)
+    guidance = delegation_guidance(str(event.get("model", "")))
     reason = (
         f"Unbounded full-file read blocked: {names}. The file exceeds {threshold()} "
         "lines or could not be sized from the hook working directory. Use an absolute "
-        "path, rg and a bounded sed range, or delegate a concise summary with file and "
-        "line references."
+        f"path or a bounded read. {guidance}"
     )
     print(
         json.dumps(

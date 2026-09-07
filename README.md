@@ -60,8 +60,12 @@ already configured before installing the plugin.
 
 Review and trust the plugin hook with `/hooks` in Codex. The hook blocks
 recognizable full-file reads above 350 lines and directs the agent to a bounded
-read or subagent summary. Set `BULK_READ_LINE_THRESHOLD` to a positive integer
-before starting Codex to choose another threshold.
+read or subagent summary. Its model-tier policy in
+`plugins/bulk-read-routing/config/delegation.json` recommends the stable
+`explorer` role more strongly for planner models such as Astra and Sol. Codex
+agent configuration owns the model assigned to that role. Set
+`BULK_READ_LINE_THRESHOLD` to a positive integer before starting Codex to choose
+another threshold.
 
 If a command runs with a tool-specific working directory, use an absolute file
 path for an unbounded read. This lets the hook verify the file size before it
@@ -109,6 +113,7 @@ install.md
 plugins/
   bulk-read-routing/
     .codex-plugin/plugin.json
+    config/delegation.json
     hooks/hooks.json
     scripts/pre_tool_use.py
     skills/bulk-read-routing/SKILL.md

@@ -24,8 +24,9 @@ class PreToolUseTests(unittest.TestCase):
     def tearDown(self):
         self.temporary.cleanup()
 
-    def bash_event(self, command: str) -> dict:
+    def bash_event(self, command: str, model: str = "gpt-5.5") -> dict:
         return {
+            "model": model,
             "tool_name": "Bash",
             "cwd": str(self.root),
             "tool_input": {"command": command},
@@ -52,6 +53,42 @@ class PreToolUseTests(unittest.TestCase):
         self.write_lines("large.txt", 351)
         payload = json.loads(run_hook(self.bash_event("cat large.txt")).stdout)
         self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny")
+
+    def test_planner_model_suggests_explorer_delegation(self):
+        self.write_lines("large.txt", 351)
+        payload = json.loads(
+            run_hook(self.bash_event("cat large.txt", "gpt-6-astra")).stdout
+        )
+        reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
+        self.assertIn("planner tier", reason)
+        self.assertIn("`explorer` role", reason)
+        self.assertIn("spot-check", reason)
+
+    def test_sol_model_uses_planner_tier(self):
+        self.write_lines("large.txt", 351)
+        payload = json.loads(
+            run_hook(self.bash_event("cat large.txt", "gpt-5.6-sol")).stdout
+        )
+        reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
+        self.assertIn("planner tier", reason)
+
+    def test_efficient_model_prefers_bounded_read(self):
+        self.write_lines("large.txt", 351)
+        payload = json.loads(
+            run_hook(self.bash_event("cat large.txt", "gpt-5.6-terra")).stdout
+        )
+        reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
+        self.assertIn("efficient tier", reason)
+        self.assertIn("coordination cost", reason)
+
+    def test_unknown_model_gets_neutral_guidance(self):
+        self.write_lines("large.txt", 351)
+        payload = json.loads(
+            run_hook(self.bash_event("cat large.txt", "future-model")).stdout
+        )
+        reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
+        self.assertIn("no configured tier", reason)
+        self.assertIn("`explorer` role", reason)
 
     def test_blocks_large_cat_from_exec_command(self):
         self.write_lines("large.txt", 351)
