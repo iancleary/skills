@@ -14,6 +14,17 @@ skills no longer ship:
 A later removal of four tool-specific bundles leaves nine skills. See
 [tool-skill recovery instructions](tools-skills-deletion.md).
 
+## Moved skill
+
+`cut-release` remains active, but `iancleary/release-skills` now owns and
+distributes it. This repository no longer ships a duplicate copy. Install the
+release-skills version before removing a stale copy owned by this repository.
+
+Keep routing references to `cut-release` when they refer to the externally
+installed skill. Use `release-runner` for repositories that use the bundled
+`release.toml` and `scripts/release.py` contract. Use `cut-release` for another
+existing repo-local release runner.
+
 No replacement skill is required for each retired skill. Preserve the following
 small rules in the baseline's owning source when updating that baseline:
 
@@ -51,12 +62,14 @@ Repository deletion does not uninstall a skill or change an existing session.
 
 1. List installed skills in the intended scope with the installation manager.
    Check its help for scope and removal options.
-2. Identify the five retired names above. Verify each copy's owner and source;
-   a same-named skill may be supplied by another installation.
+2. Identify the five retired names above and stale `cut-release` copies owned by
+   this repository. Verify each copy's owner and source; a same-named skill may
+   be supplied by another installation.
 3. If Forge policy owns the installation, update the policy's skill selection
    and baseline source in Forge before applying its normal reviewed update.
    Otherwise remove the verified copies with their installation manager.
 4. Remove routing references to retired names from the baseline's owning source.
+   Keep `cut-release` routing when `iancleary/release-skills` supplies the skill.
    Preserve any missing rules from this document; avoid duplicating existing rules.
 5. Verify the installed list and baseline diff, then restart the agent session.
 
