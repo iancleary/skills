@@ -119,6 +119,7 @@ Included skills:
 - `cut-release`
 - `debugging-and-error-recovery`
 - `design-algorithm`
+- `herdr-coordinator`
 - `librarian`
 - `security-and-hardening`
 - `test-strategy`
@@ -154,6 +155,8 @@ skills/
   design-algorithm/
     SKILL.md
   api-and-interface-design/
+    SKILL.md
+  herdr-coordinator/
     SKILL.md
   ...
 ```
