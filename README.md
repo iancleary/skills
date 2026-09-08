@@ -116,7 +116,6 @@ Included skills:
 
 - `api-and-interface-design`
 - `codegraph`
-- `cut-release`
 - `debugging-and-error-recovery`
 - `design-algorithm`
 - `herdr-coordinator`
@@ -129,7 +128,8 @@ Included skills:
 disables implicit invocation; invoke it by name when needed. Other agents should
 follow the same boundary described in the skill.
 
-Five general-purpose skills have been retired. See
+Five general-purpose skills have been retired, and `cut-release` has moved to
+`iancleary/release-skills`. See
 [`docs/skill-retirement.md`](docs/skill-retirement.md) for the replacement
 guidance and installed-copy migration steps. Updating this repository does not
 automatically remove existing installations or baseline routing references.
