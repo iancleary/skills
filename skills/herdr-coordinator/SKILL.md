@@ -6,6 +6,8 @@ description: "Use when asked to complete a task with Herdr, coordinate Herdr wor
 # Herdr Coordinator
 
 Use Herdr as the work coordinator, not as a message relay for the user.
+Treat the user's request that invoked this skill as the task. Do not wait for a
+literal `[TASK]` placeholder or ask the user to repeat the request.
 
 ## Workflow
 
