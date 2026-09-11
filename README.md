@@ -121,6 +121,7 @@ Included skills:
 - `herdr-coordinator`
 - `librarian`
 - `security-and-hardening`
+- [`tailscale-operations`](skills/tailscale-operations/SKILL.md)
 - `test-strategy`
 - `thinking-in-the-limit`
 
