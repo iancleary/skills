@@ -7,9 +7,8 @@ It tells agents when to reach for a workflow, what command surface owns the
 work, and how to verify that the work is done. Small plugins can live here when
 they make one workflow enforceable without creating a reusable CLI.
 
-The companion tools repo is [`iancleary/forge`](https://github.com/iancleary/forge). Use Forge to install, update, verify, and release the underlying toolbelt. Use this repo to install portable skill instructions.
-
-This repo is also the intended migration home for portable non-Forge-CLI skills that were originally bundled in Forge releases. Forge should keep skills that must move with Forge binaries or Forge-managed assets; this repo should own reusable workflow skills that can be installed by policy.
+This repository owns reusable workflow skills. General-purpose executable tools
+and their implementation documentation belong in their owning repositories.
 
 ## Install
 
@@ -88,7 +87,7 @@ Review and trust the plugin hook with `/hooks` in Codex. The hook blocks
 recognizable full-file reads above 350 lines and directs the agent to a bounded
 read or subagent summary. Its model-tier policy in
 `plugins/bulk-read-routing/config/delegation.json` recommends the stable
-`bulk_reader_fast` role more strongly for planner models such as Astra and Sol.
+`bulk_reader_fast` role when broad understanding is worth the coordination cost.
 Codex agent configuration owns the model assigned to that role. Set
 `BULK_READ_LINE_THRESHOLD` to a positive integer before starting Codex to choose
 another threshold.
@@ -115,7 +114,6 @@ See [`docs/release.md`](docs/release.md).
 Included skills:
 
 - `api-and-interface-design`
-- `codegraph`
 - `debugging-and-error-recovery`
 - `design-algorithm`
 - `herdr-coordinator`
@@ -128,8 +126,8 @@ Included skills:
 disables implicit invocation; invoke it by name when needed. Other agents should
 follow the same boundary described in the skill.
 
-Five general-purpose skills have been retired, and `cut-release` has moved to
-`iancleary/release-skills`. See
+Six general-purpose skills have been retired, including `codegraph`, and
+`cut-release` has moved to `iancleary/release-skills`. See
 [`docs/skill-retirement.md`](docs/skill-retirement.md) for the replacement
 guidance and installed-copy migration steps. Updating this repository does not
 automatically remove existing installations or baseline routing references.
@@ -176,7 +174,7 @@ Good candidates:
 - command safety and verification rules
 - stable installation or recovery playbooks
 - recurring agent tasks that should not depend on memory
-- portable workflow skills migrated out of Forge once `forge policy` can install and pin this repo
+- portable workflow skills that should be installable across repositories
 - small hook-based plugins whose helper is inseparable from the workflow
 
 Poor candidates:
@@ -187,17 +185,8 @@ Poor candidates:
 - full tools or reusable CLIs
 - docs that belong in the owning code repo
 
-## Forge Split
+## Repository Boundary
 
-Use this split:
-
-- `iancleary/forge`: tools, binaries, release scripts, managed assets, implementation docs
-- `iancleary/skills`: portable instructions and small workflow-bound plugins
-
-If executable code has a useful standalone command surface, it belongs in
-Forge. If a small helper only enforces one portable workflow, it can remain
-beside that skill in this repo.
-
-Long term, Forge policy should decide whether a machine installs this repo into the user-global target, a repo-local target, or both.
-
-Forge-specific skills such as `forge-tools` and `forge-cli` belong only in `iancleary/forge`.
+If executable code has a useful standalone command surface, keep it in its
+owning tools repository. A small helper that only enforces one portable workflow
+can remain beside that skill.

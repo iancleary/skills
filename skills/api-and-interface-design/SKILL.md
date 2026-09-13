@@ -38,12 +38,8 @@ For commands used by automation:
 
 ## Output
 
-Include:
-
-- chosen interface
-- compatibility decision
-- rejected alternatives
-- tests or examples proving the contract
+Report the chosen contract, compatibility impact, and verification. Include
+rejected alternatives only when they explain a meaningful tradeoff.
 
 ## Checks
 

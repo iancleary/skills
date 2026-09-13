@@ -78,8 +78,10 @@ def delegation_guidance(model: str) -> str:
     model_label = model or "unknown model"
     if tier == "planner":
         return (
-            f"Current model {model_label} matches the planner tier. Delegate broad "
-            f"read-only analysis to the `{role}` role with a concrete question. "
+            f"Current model {model_label} matches the planner tier. Consider delegating "
+            f"read-only analysis to the `{role}` role when broad understanding is "
+            "needed and expected context savings exceed coordination costs. Give "
+            "the delegate a concrete question. "
             "Require concise findings with file and line references, then spot-check "
             "the relevant ranges. You remain responsible for the task and may retry, "
             "choose another role, or use bounded reads when delegation fails for any "
@@ -127,11 +129,17 @@ def resolve_path(value: Any, cwd: Path) -> Path | None:
 
 
 def shell_read_paths(command: str, cwd: Path) -> list[Path]:
+    # Inspect literal simple commands only; never evaluate shell syntax.
+    if "\n" in command or "\r" in command:
+        return []
     try:
-        words = shlex.split(command)
+        lexer = shlex.shlex(command, posix=True, punctuation_chars="|&;<>()")
+        lexer.whitespace_split = True
+        lexer.commenters = ""
+        words = list(lexer)
     except ValueError:
         return []
-    shell_operators = {"|", "||", "&&", ";", ">", ">>"}
+    shell_operators = {"|", "||", "&", "&&", ";", ";;", ">", ">>", "<", "<<", "(", ")"}
     if not words or any(word in shell_operators for word in words):
         return []
     if Path(words[0]).name not in FULL_READ_COMMANDS:
@@ -177,7 +185,6 @@ def blocked_paths(event: dict[str, Any]) -> list[Path]:
     tool_name = str(event.get("tool_name", ""))
     tool_input = event.get("tool_input")
     candidates: list[Path] = []
-    block_unresolved = False
     normalized_tool_name = tool_name.lower().replace("__", ".")
     shell_input_key = None
     if tool_name == "Bash":
@@ -186,11 +193,9 @@ def blocked_paths(event: dict[str, Any]) -> list[Path]:
         shell_input_key = "cmd"
 
     if normalized_tool_name == "functions.exec":
-        block_unresolved = True
         for command in functions_exec_commands(tool_input):
             candidates.extend(shell_read_paths(command, cwd))
     elif shell_input_key is not None and isinstance(tool_input, dict):
-        block_unresolved = True
         command = tool_input.get(shell_input_key)
         if isinstance(command, str):
             candidates.extend(shell_read_paths(command, cwd))
@@ -202,8 +207,7 @@ def blocked_paths(event: dict[str, Any]) -> list[Path]:
     return [
         path
         for path in candidates
-        if (path.is_file() and line_count_exceeds(path, limit))
-        or (block_unresolved and not path.exists())
+        if path.is_file() and line_count_exceeds(path, limit)
     ]
 
 
@@ -221,8 +225,8 @@ def main() -> int:
     guidance = delegation_guidance(str(event.get("model", "")))
     reason = (
         f"Unbounded full-file read blocked: {names}. The file exceeds {threshold()} "
-        "lines or could not be sized from the hook working directory. Use an absolute "
-        f"path or a bounded read. {guidance}"
+        "lines. Use a bounded read; read successive ranges when the complete file "
+        f"is required. {guidance}"
     )
     print(
         json.dumps(

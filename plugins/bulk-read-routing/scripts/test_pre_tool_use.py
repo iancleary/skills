@@ -49,6 +49,26 @@ class PreToolUseTests(unittest.TestCase):
     def write_lines(self, name: str, count: int) -> None:
         (self.root / name).write_text("line\n" * count)
 
+    def test_small_brace_group(self):
+        self.write_lines("a.txt", 10)
+        self.write_lines("b.txt", 10)
+        self.assertEqual(run_hook(self.bash_event("cat {a,b}.txt")).stdout, "")
+
+    def test_semicolon_commands_not_interpreted(self):
+        self.write_lines("small.txt", 10)
+        self.write_lines("large.txt", 500)
+        for command in ["cat small.txt; wc -l large.txt", "cat small.txt;cat small.txt", "cat small.txt\nwc -l large.txt"]:
+            with self.subTest(command=command):
+                self.assertEqual(run_hook(self.bash_event(command)).stdout, "")
+
+    def test_known_large_still_blocks_with_unresolved_argument(self):
+        self.write_lines("large.txt", 500)
+        self.assertIn('"deny"', run_hook(self.bash_event("cat large.txt missing.txt")).stdout)
+
+    def test_quoted_semicolon_filename_still_blocks(self):
+        self.write_lines("large;file.txt", 500)
+        self.assertIn('"deny"', run_hook(self.bash_event("cat 'large;file.txt'")).stdout)
+
     def test_blocks_large_cat(self):
         self.write_lines("large.txt", 351)
         payload = json.loads(run_hook(self.bash_event("cat large.txt")).stdout)
@@ -61,6 +81,8 @@ class PreToolUseTests(unittest.TestCase):
         )
         reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
         self.assertIn("planner tier", reason)
+        self.assertIn("Consider delegating", reason)
+        self.assertIn("expected context savings exceed coordination costs", reason)
         self.assertIn("`bulk_reader_fast` role", reason)
         self.assertIn("spot-check", reason)
         self.assertIn("remain responsible", reason)
@@ -143,10 +165,8 @@ class PreToolUseTests(unittest.TestCase):
         self.write_lines("small.txt", 350)
         self.assertEqual(run_hook(self.bash_event("cat small.txt")).stdout, "")
 
-    def test_blocks_unresolved_relative_cat(self):
-        payload = json.loads(run_hook(self.bash_event("cat elsewhere.txt")).stdout)
-        reason = payload["hookSpecificOutput"]["permissionDecisionReason"]
-        self.assertIn("could not be sized", reason)
+    def test_allows_unresolved_relative_cat(self):
+        self.assertEqual(run_hook(self.bash_event("cat elsewhere.txt")).stdout, "")
 
     def test_allows_missing_direct_read_to_report_its_own_error(self):
         event = {
