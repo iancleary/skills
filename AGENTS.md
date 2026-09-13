@@ -5,18 +5,12 @@ Guidance for agents working in `iancleary/skills`.
 ## Purpose
 
 This repo distributes portable agent skills and small plugins that make those
-skills enforceable. It is not the implementation home for Forge or another
-general-purpose CLI.
+skills enforceable. It is not the implementation home for a general-purpose CLI.
 
 Use this repo to preserve reusable workflow instructions. A skill or plugin can
 include a small executable helper when the helper is inseparable from that
-workflow and has no useful standalone command surface. Use `iancleary/forge`
-for general-purpose executable tools, release machinery, fleet-wide Codex asset
-deployment, and implementation docs.
-
-This repo is the intended migration home for portable non-Forge-CLI skills that do not need to ship inside Forge releases. Do not move a skill here from Forge unless the migration keeps the installed capability surface intact or the user explicitly accepts the break.
-
-Forge-specific skills such as `forge-tools` and `forge-cli` belong only in `iancleary/forge`.
+workflow and has no useful standalone command surface. General-purpose tools,
+release machinery, and their implementation docs belong in their owning repos.
 
 ## Before Editing
 
@@ -25,7 +19,7 @@ Forge-specific skills such as `forge-tools` and `forge-cli` belong only in `ianc
 - read `docs/release.md` before cutting or changing releases
 - keep the change scoped to the requested skill or repo-level doc
 - verify whether the behavior belongs here or in the owning tools repo
-- when migrating a skill from Forge, check the Forge docs and release-skill list before removing it from Forge
+- when retiring or moving a skill, preserve the installed capability or document the accepted break
 
 ## Skill Rules
 
@@ -97,7 +91,7 @@ Write for future agents. Be direct, specific, and compact.
 Prefer:
 
 - "Use `api-and-interface-design` before changing a stable CLI contract."
-- "Use `iancleary/forge` for executable tools and Forge-specific skills."
+- "Use the owning tools repo for a reusable executable command."
 
 Avoid:
 

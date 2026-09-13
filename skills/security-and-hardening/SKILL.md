@@ -24,7 +24,7 @@ This skill is adapted from `addyosmani/agent-skills`; see `THIRD_PARTY_NOTICES.m
 5. Keep mitigations small and observable.
 6. Add regression proof for accepted findings.
 
-## Forge Bias
+## Agent CLI Bias
 
 For agent-facing CLIs, the highest-value hardening usually is:
 

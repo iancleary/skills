@@ -1,7 +1,6 @@
 # Retired skills
 
-The first retirement pass reduced the portfolio from 18 to 13 skills. These five
-skills no longer ship:
+These skills no longer ship:
 
 | Retired skill | Replacement |
 | --- | --- |
@@ -10,6 +9,7 @@ skills no longer ship:
 | `git-forge-body-file` | Baseline hosted-Git rules, including the Gitea details below. |
 | `source-driven-development` | Baseline evidence rules and product-specific documentation workflows. |
 | `learning-systems` | An ordinary learning request with a topic-appropriate study structure. |
+| `codegraph` | Use repository search, language tools, and available code-intelligence tools directly. |
 
 A later removal of four tool-specific bundles leaves nine skills. See
 [tool-skill recovery instructions](tools-skills-deletion.md).
@@ -65,14 +65,12 @@ Repository deletion does not uninstall a skill or change an existing session.
 2. Identify the five retired names above and stale `cut-release` copies owned by
    this repository. Verify each copy's owner and source; a same-named skill may
    be supplied by another installation.
-3. If Forge policy owns the installation, update the policy's skill selection
-   and baseline source in Forge before applying its normal reviewed update.
-   Otherwise remove the verified copies with their installation manager.
+3. Remove verified stale copies with their installation manager.
 4. Remove routing references to retired names from the baseline's owning source.
    Keep `cut-release` routing when `iancleary/release-skills` supplies the skill.
    Preserve any missing rules from this document; avoid duplicating existing rules.
 5. Verify the installed list and baseline diff, then restart the agent session.
 
-This branch changes repository distribution only. It does not change installed
-copies, Forge policy, or user-scoped baseline files. Git history retains the
+Repository changes do not automatically change installed copies or user-scoped
+baseline files. Git history retains the
 retired skills if a capability needs to be recovered.

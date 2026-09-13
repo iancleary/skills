@@ -7,7 +7,9 @@ description: "Choose focused verification when test scope, regression coverage, 
 
 Use tests as proof, not ceremony.
 
-This skill is adapted from `addyosmani/agent-skills` `test-driven-development`, but Forge uses a softer test-strategy contract; see `THIRD_PARTY_NOTICES.md` for upstream provenance and MIT license notice.
+This skill is adapted from `addyosmani/agent-skills` `test-driven-development`,
+with a softer test-strategy contract; see `THIRD_PARTY_NOTICES.md` for upstream
+provenance and MIT license notice.
 
 ## Workflow
 
@@ -19,7 +21,8 @@ This skill is adapted from `addyosmani/agent-skills` `test-driven-development`, 
    - smoke/live check for installed or external behavior when local proof is insufficient
 4. Keep tests DAMP enough that the expected behavior is visible.
 5. Avoid asserting private implementation details unless the implementation is the contract.
-6. Run the focused test, then the broader check appropriate to the blast radius.
+6. Run the focused proof and required repository checks. Broaden only when the
+   change, failures, or remaining uncertainty justify it.
 
 ## When Not To Force TDD
 
@@ -34,12 +37,8 @@ Still leave proof in the final report.
 
 ## Output
 
-Include:
-
-- risk being tested
-- test seam chosen
-- command run
-- remaining test gap, if any
+Report the verification result and material gaps. Explain the chosen test seam
+when that decision needs justification.
 
 ## Checks
 

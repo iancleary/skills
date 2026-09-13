@@ -26,8 +26,9 @@ When the hook blocks a read:
    task's cost, risk, and remaining uncertainty.
 
 The denial message uses the current model slug to select advice from
-`config/delegation.json`. Planner-tier models receive a stronger recommendation
-to delegate broad reading to the configured role. Efficient-tier models receive
+`config/delegation.json`. Planner-tier models receive a conditional recommendation
+to delegate broad reading when expected savings exceed coordination costs.
+Efficient-tier models receive
 a stronger recommendation to use targeted reads first. Unknown models receive
 neutral advice. The role name is stable; Codex agent configuration owns the
 model assigned to that role.
@@ -48,7 +49,14 @@ order, and it does not prevent the primary agent from continuing after an
 administrative or semantic delegation failure. The primary agent decides when
 the evidence is sufficient and which fallback is appropriate.
 
-The hook is conservative. It blocks recognizable full-file reads only.
-Ambiguous shell commands and bounded reads pass through. When the hook cannot
-resolve a relative file against its working directory, retry with an absolute
-path so it can verify the file size.
+The hook blocks only recognizable full-file reads of files confirmed to exceed
+the line threshold. Ambiguous shell commands, unresolved paths, and bounded reads
+pass through without output. No nonblocking advisory output contract is assumed.
+To investigate an unresolved path, use an absolute literal path or a bounded read;
+this does not require delegation. Read successive bounded ranges when the task
+requires the complete file.
+
+Evaluate the trial using context saved, false-positive blocks, retries, delegation
+coordination cost, and missed context. Compare representative small grouped reads,
+known oversized direct reads, and tasks that require a complete file before
+promoting this behavior to the source repository.

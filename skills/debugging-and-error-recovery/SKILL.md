@@ -17,7 +17,7 @@ This skill is adapted from `addyosmani/agent-skills`; see `THIRD_PARTY_NOTICES.m
 4. Reduce the case until the suspected cause is isolated.
 5. Fix at the ownership boundary where the invariant belongs.
 6. Add or update a guard: focused test, validation, clearer error, or docs.
-7. Rerun the failing command and a small adjacent check.
+7. Rerun the failing case. Check adjacent behavior when the fix could affect it.
 
 ## Stop And Reassess
 
@@ -29,16 +29,13 @@ Stop adding patches when:
 - the underlying contract is unclear
 
 At that point, restate what is known, what is inferred, and what evidence is missing.
+Continue diagnosis within the authorized scope; ask for input only when needed.
 
 ## Output
 
-Include:
-
-- reproduction command
-- root cause or strongest remaining hypothesis
-- fix boundary
-- proof command
-- residual risk
+Report the cause or remaining hypothesis, the fix, and verification. Include
+a reproduction command when useful to repeat the failure, and residual risk
+only when a material uncertainty remains.
 
 ## Checks
 

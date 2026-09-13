@@ -14,19 +14,14 @@ Use this repo for instruction surfaces:
 - what safety boundary applies
 - how to verify completion
 
-Use `iancleary/forge` for executable tooling:
-
-- Rust CLI implementations
-- installers and release scripts
-- Forge-managed assets
-- command specs and implementation docs
+Use the owning tools repository for reusable executable tooling, installers,
+release scripts, command specifications, and implementation documentation.
 
 A skill or plugin can keep a small executable helper here when the helper is
 inseparable from that workflow and has no useful standalone command surface.
 
-This repo is the intended home for portable non-Forge-CLI workflow skills once Forge policy can install and pin it for a machine or repo. Keep Forge-coupled CLI skills in `iancleary/forge`.
-
-Forge-specific skills such as `forge-tools` and `forge-cli` should not live here.
+This repo owns portable workflow skills that can be installed for a machine or
+repository. Keep tool-coupled behavior with the tool that owns it.
 
 ## Editing Skills
 

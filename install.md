@@ -24,7 +24,7 @@ Use a user-global install when the skills should be available across the machine
 npx skills add iancleary/skills -g
 ```
 
-If a machine policy tool such as Forge is available, prefer the policy-managed target rather than guessing.
+Use the user's requested scope. When no scope is stated, prefer a repository-local install.
 
 ## Step 1: Install Skills
 
