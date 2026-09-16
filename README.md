@@ -26,6 +26,12 @@ To install globally:
 npx skills add iancleary/skills -g
 ```
 
+or 
+
+```sh
+npx skills add iancleary/skills --global --yes --agent codex
+```
+
 From a clone of this repository, the equivalent command is:
 
 ```sh
