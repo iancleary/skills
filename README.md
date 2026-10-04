@@ -102,6 +102,18 @@ If a command runs with a tool-specific working directory, use an absolute file
 path for an unbounded read. This lets the hook verify the file size before it
 allows the command.
 
+## Check
+
+Run `just check`. It validates all nine active packages, rejects moved or retired
+packages and duplicate names, and runs offline plugin and runtime fixtures.
+See [`docs/curation.md`](docs/curation.md) for ownership policy.
+
+Python tasks and plugin hooks require `uv` with managed Python 3.11. Install it
+with `uv python install 3.11` if needed. Commands select `--managed-python` so
+ambient interpreters cannot satisfy the contract. Installer and live-test recipes
+forward each argument literally with `"$@"`. The offline check does not install
+roles or start live delegation.
+
 ## Releases
 
 This repo uses UTC calendar versions in `YYYY.MM.DD.XX` format, with `XX` starting at `0` each day.
@@ -109,10 +121,10 @@ This repo uses UTC calendar versions in `YYYY.MM.DD.XX` format, with `XX` starti
 Use the checked-in Python runner through `uv`:
 
 ```sh
-uv run scripts/release.py check --json
-uv run scripts/release.py plan --json
-uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
-uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py check --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py plan --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
 ```
 
 See [`docs/release.md`](docs/release.md).

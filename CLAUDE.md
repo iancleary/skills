@@ -38,17 +38,10 @@ does not use Codex's `agents/openai.yaml` invocation policy. When retiring skill
 follow the migration guidance in `docs/skill-retirement.md` and remove stale
 references from active repository documentation.
 
-Use the skill validator available in your environment. For Codex's `skill-creator` skill, that is usually:
-
-```sh
-uv run <path-to-skill-creator>/scripts/quick_validate.py skills/<skill-name>
-```
-
-For repo docs-only changes, run:
-
-```sh
-git diff --check
-```
+Run `just check` after package, plugin, or curation changes. The release
+contract invokes this same aggregate gate. See `docs/curation.md`.
+Repository Python commands select managed Python 3.11 through `uv`; preserve
+literal positional argument forwarding in task recipes.
 
 Do not add private memory, account details, or local-only secrets to this public repo.
 
@@ -59,10 +52,10 @@ Read `docs/release.md` before cutting a release.
 Use:
 
 ```sh
-uv run scripts/release.py check --json
-uv run scripts/release.py plan --json
-uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
-uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py check --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py plan --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
 ```
 
 For ordinary release requests, follow `release-runner` from `iancleary/release-skills` and the checked-in contract. Use `create-release-process` for maintenance. Read `docs/release.md` for version selection and runner provenance.

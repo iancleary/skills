@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import json
 import subprocess
 import tempfile
@@ -11,7 +12,7 @@ SCRIPT = Path(__file__).with_name("pre_tool_use.py")
 
 def run_hook(event: dict) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        ["python3", str(SCRIPT)], input=json.dumps(event), text=True,
+        [sys.executable, str(SCRIPT)], input=json.dumps(event), text=True,
         capture_output=True, check=False,
     )
 

@@ -9,21 +9,20 @@ sha256 = "10869f02fe8a1190e75cc3e70eef85012e89dba52b89d865f79a6a9fb317139e"
 runner_protocol = "prepared-v1"
 name = "skills"
 runner = [
-  "uv", "run", "scripts/release.py", "tag-release",
+  "uv", "run", "--no-project", "--managed-python", "--python", "3.11", "scripts/release.py", "tag-release",
   "--provider", "github",
   "--tag-prefix", "",
   "--branch", "main",
 ]
 dry_run_args = ["--dry-run"]
-current_version_command = ["uv", "run", "scripts/release_policy.py", "current"]
-next_version_command = ["uv", "run", "scripts/release_policy.py", "next"]
-validate_version_command = ["uv", "run", "scripts/release_policy.py", "validate"]
+current_version_command = ["uv", "run", "--no-project", "--managed-python", "--python", "3.11", "scripts/release_policy.py", "current"]
+next_version_command = ["uv", "run", "--no-project", "--managed-python", "--python", "3.11", "scripts/release_policy.py", "next"]
+validate_version_command = ["uv", "run", "--no-project", "--managed-python", "--python", "3.11", "scripts/release_policy.py", "validate"]
 publish = true
 
 [checks]
 commands = [
-  ["uv", "run", "scripts/release_policy.py", "check"],
-  ["git", "diff", "--check"],
-  ["uv", "run", "--python", "3.11", "python", "-B", "scripts/test_release_policy.py"],
-  ["uv", "run", "--python", "3.11", "python", "-B", "-m", "unittest", "discover", "-s", "plugins/bulk-read-routing/scripts", "-p", "test_*.py"],
+  ["uv", "run", "--no-project", "--managed-python", "--python", "3.11", "scripts/release_policy.py", "check"],
+  ["just", "check"],
+  ["uv", "run", "--no-project", "--managed-python", "--python", "3.11", "python", "-B", "scripts/test_release_policy.py"],
 ]
