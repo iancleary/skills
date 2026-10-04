@@ -26,6 +26,23 @@ This skill is adapted from `addyosmani/agent-skills`; see `THIRD_PARTY_NOTICES.m
 5. Decide which invalid states should be rejected at the boundary.
 6. Update docs and tests with the contract, not just the implementation.
 
+## Caller complexity and alternatives
+
+Count everything a caller must know: ordering, configuration, invariants, errors,
+and performance constraints as well as parameters. A smaller signature is not
+an improvement if it pushes coordination or error handling into every caller.
+Name the complexity the interface absorbs and what remains the caller's job.
+
+When a consequential tradeoff remains, compare materially different contracts
+against the same callers and constraints. Use concrete call examples and identify
+migration costs. Keep the comparison bounded; use independent agents only when
+their expected value exceeds the coordination cost. Routine changes can use the
+existing contract directly.
+
+Keep implementation details private when callers do not need them. Preserve
+ownership, engineering units, and error semantics when consolidating behavior.
+An extra adapter or wrapper needs a demonstrated purpose.
+
 ## CLI Contracts
 
 For commands used by automation:
@@ -45,3 +62,6 @@ rejected alternatives only when they explain a meaningful tradeoff.
 
 - Do not add flags or fields only because a similar tool has them.
 - Do not widen a public contract to avoid making one local caller clearer.
+
+The guidance on caller complexity and alternative contracts also adapts Matt Pocock's skills.
+See [third-party notices](THIRD_PARTY_NOTICES.md) for pinned sources and licenses.

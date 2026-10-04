@@ -11,7 +11,8 @@ These skills no longer ship:
 | `learning-systems` | An ordinary learning request with a topic-appropriate study structure. |
 | `codegraph` | Use repository search, language tools, and available code-intelligence tools directly. |
 
-A later removal of four tool-specific bundles leaves nine skills. See
+A later removal of four tool-specific bundles left nine skills before the
+architecture-review and retro additions. See
 [tool-skill recovery instructions](tools-skills-deletion.md).
 
 ## Moved skill

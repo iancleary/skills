@@ -104,7 +104,7 @@ allows the command.
 
 ## Check
 
-Run `just check`. It validates all nine active packages, rejects moved or retired
+Run `just check`. It validates all eleven active packages, rejects moved or retired
 packages and duplicate names, and runs offline plugin and runtime fixtures.
 See [`docs/curation.md`](docs/curation.md) for ownership policy.
 
@@ -132,17 +132,19 @@ See [`docs/release.md`](docs/release.md).
 Included skills:
 
 - `api-and-interface-design`
+- `architecture-review`
 - `debugging-and-error-recovery`
 - `design-algorithm`
 - `herdr-coordinator`
 - `librarian`
+- `retro`
 - `security-and-hardening`
 - `test-strategy`
 - `thinking-in-the-limit`
 
-`thinking-in-the-limit` is an explicit-request workflow. Its Codex metadata
-disables implicit invocation; invoke it by name when needed. Other agents should
-follow the same boundary described in the skill.
+`architecture-review`, `retro`, and `thinking-in-the-limit` are explicit-request
+workflows. Their Codex metadata disables implicit invocation; invoke them by name
+when needed. Other agents should follow the same boundary described in each skill.
 
 Six general-purpose skills have been retired, including `codegraph`, and
 `cut-release` has moved to `iancleary/release-skills`. See
@@ -153,6 +155,14 @@ automatically remove existing installations or baseline routing references.
 Four tool-specific skill bundles were also removed from this curation. See
 [`docs/tools-skills-deletion.md`](docs/tools-skills-deletion.md) for their last
 retained versions and recovery instructions.
+
+## Upstream adoption reviews
+
+See [the Matt Pocock skills comparison](docs/mattpocock-skills-review.md) for
+adopted techniques, ownership boundaries, and acceptance criteria. The review uses
+a pinned MIT-licensed snapshot; its [component notice](LICENSE.mattpocock)
+records the license and source permalinks. Each adapted package retains its own
+third-party notices. Repository changes do not update installed skill copies.
 
 ## Repository Shape
 

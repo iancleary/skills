@@ -24,6 +24,22 @@ provenance and MIT license notice.
 6. Run the focused proof and required repository checks. Broaden only when the
    change, failures, or remaining uncertainty justify it.
 
+## Independent proof
+
+Choose expected results from an independent source: a worked example, specification,
+known-good observation, or separately derived invariant. Repeating the production
+calculation in the assertion can reproduce the same mistake.
+
+For a regression, show that the test fails for the reported behavior before the
+fix and passes afterward. A nearby error or a successful process exit is not
+proof of the user's symptom. Use a negative control when the original state
+cannot be run safely, and identify the limit of that evidence.
+
+When test-first development fits, implement one observable behavior at a time.
+Use each result to choose the next case. Preserve useful internal tests for
+algorithms, numerical edge cases, and invariants; changing an interface does not
+by itself make those tests redundant.
+
 ## When Not To Force TDD
 
 Do not invent a failing test first when:
@@ -44,3 +60,6 @@ when that decision needs justification.
 
 - Do not use snapshot churn as proof of correctness.
 - Do not mock the exact behavior that needs verification.
+
+The guidance on independent proof also adapts Matt Pocock's skills.
+See [third-party notices](THIRD_PARTY_NOTICES.md) for pinned sources and licenses.
