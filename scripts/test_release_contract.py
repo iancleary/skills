@@ -24,6 +24,9 @@ class ReleaseContractTests(unittest.TestCase):
 
             shutil.copytree(ROOT / "scripts", repo / "scripts")
             shutil.copytree(ROOT / "plugins", repo / "plugins")
+            shutil.copytree(ROOT / "skills", repo / "skills")
+            shutil.copy2(ROOT / "justfile", repo / "justfile")
+            shutil.copy2(ROOT / "curation.toml", repo / "curation.toml")
             shutil.copy2(ROOT / "release.toml", repo / "release.toml")
             run("git", "init", "--bare", str(base / "origin.git"))
             run("git", "init", "-b", "main")
@@ -53,6 +56,29 @@ class ReleaseContractTests(unittest.TestCase):
                 failure = run(*prefix, "run", "--dry-run", "--version", version, "--json", ok=False)
                 self.assertNotEqual(failure.returncode, 0)
                 self.assertIn("error", json.loads(failure.stdout))
+            # Exercise the release gate itself, not only validator unit calls.
+            skill = repo / "skills/librarian/SKILL.md"
+            original = skill.read_text()
+            for label, mutate in [
+                ("invalid frontmatter", lambda: skill.write_text(original.replace("name: librarian", "extra: invalid\nname: librarian"))),
+                ("moved package", lambda: ((repo / "skills/cut-release").mkdir(),
+                    (repo / "skills/cut-release/SKILL.md").write_text("---\nname: cut-release\ndescription: Use when testing.\n---\n"))),
+            ]:
+                with self.subTest(label=label):
+                    mutate()
+                    run("git", "add", ".")
+                    run("git", "commit", "-m", label)
+                    run("git", "push", "origin", "main")
+                    failure = run(*prefix, "run", "--dry-run", "--version",
+                                  plan["next_version"], "--json", ok=False)
+                    self.assertNotEqual(failure.returncode, 0)
+                    self.assertIn("check", json.loads(failure.stdout)["error"])
+                    self.assertEqual(run("git", "tag", "--list").stdout.strip(), "2026.09.01.0")
+                    skill.write_text(original)
+                    shutil.rmtree(repo / "skills/cut-release", ignore_errors=True)
+                    run("git", "add", ".")
+                    run("git", "commit", "-m", "restore valid fixture")
+                    run("git", "push", "origin", "main")
             run("git", "switch", "-c", "wrong-branch")
             failure = run(*prefix, "run", "--dry-run", "--version",
                           plan["next_version"], "--json", ok=False)

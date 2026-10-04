@@ -50,29 +50,25 @@ Avoid duplicating full skill content in repo-level docs. Link to the owning skil
 
 ## Validation
 
-After changing a skill, run the skill validator available in your agent environment. For Codex's `skill-creator` skill, that is usually `quick_validate.py`:
+Run `just check` after package, plugin, or curation changes. The aggregate gate
+validates every active package against `curation.toml`, rejects retired or moved
+names and duplicates, and runs negative fixtures and plugin tests. The release
+contract invokes the same gate. Change curation policy deliberately when adding
+or moving a package. See `docs/curation.md`.
 
-```sh
-uv run <path-to-skill-creator>/scripts/quick_validate.py skills/<skill-name>
-```
-
-For docs-only changes, run:
-
-```sh
-git diff --check
-```
-
-Before pushing, inspect the diff and make sure repo-level docs still describe the current tree.
+Repository Python tasks use `uv run --no-project --managed-python --python 3.11 python`.
+Do not replace managed execution with ambient `python3`. Preserve positional
+argument forwarding through `"$@"` in task recipes.
 
 ## Releases
 
 Use the repo-local release runner:
 
 ```sh
-uv run scripts/release.py check --json
-uv run scripts/release.py plan --json
-uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
-uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py check --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py plan --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
 ```
 
 For ordinary release requests, use `release-runner` from `iancleary/release-skills` and the checked-in contract. Use `create-release-process` for maintenance. Versions use UTC `YYYY.MM.DD.XX`, where `XX` starts at `0` each day. Read `docs/release.md` for version selection and runner provenance.

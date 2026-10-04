@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$PLUGIN_ROOT/scripts/pre_tool_use.py\"",
+            "command": "uv run --no-project --managed-python --python 3.11 python \"$PLUGIN_ROOT/scripts/pre_tool_use.py\"",
             "timeout": 5,
             "statusMessage": "Checking bulk read size"
           }

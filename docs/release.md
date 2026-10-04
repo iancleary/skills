@@ -11,13 +11,14 @@ including the upstream URL attribution added after `release-skills v1.0.1`.
 clean main checkout matching origin/main.
 
 Use `create-release-process` for maintenance and `release-runner` for execution.
-The commands need no globally installed skills.
+The commands need no globally installed skills. The contract selects managed
+Python 3.11 using `uv --managed-python`; ambient Python cannot satisfy it.
 
 ```sh
-uv run scripts/release.py check --json
-uv run scripts/release.py plan --json
-uv run scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
-uv run scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py check --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py plan --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py run --dry-run --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
+uv run --no-project --managed-python --python 3.11 scripts/release.py run --apply --version YYYY.MM.DD.XX --expected-head COMMIT --expected-config SHA256 --json
 ```
 
 Fetch origin tags before planning a real release. Plan uses local tags and the
@@ -28,7 +29,8 @@ format, real calendar date and canonical daily serial before execution.
 
 Plan describes intent and reports ready=null. Check runs the checks declared in
 TOML: a clean main checkout matching origin/main, whitespace validation and
-plugin tests. Run enforces those same checks through prepared-v1 before tagging;
+`just check` (package curation, plugin and managed-runtime regression tests).
+Run enforces those same checks through prepared-v1 before tagging;
 there is no separate duplicate check list. Dry-run also checks tag availability.
 Apply requires explicit publication authorization. It creates an annotated
 tag, pushes the tag, then creates the GitHub release. GitHub generates notes
