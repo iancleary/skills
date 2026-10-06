@@ -104,7 +104,7 @@ allows the command.
 
 ## Check
 
-Run `just check`. It validates all eleven active packages, rejects moved or retired
+Run `just check`. It validates all 62 active packages, rejects moved or retired
 packages and duplicate names, and runs offline plugin and runtime fixtures.
 See [`docs/curation.md`](docs/curation.md) for ownership policy.
 
@@ -155,6 +155,17 @@ automatically remove existing installations or baseline routing references.
 Four tool-specific skill bundles were also removed from this curation. See
 [`docs/tools-skills-deletion.md`](docs/tools-skills-deletion.md) for their last
 retained versions and recovery instructions.
+
+## Pstack trial
+
+The complete upstream pstack skill set is available for an explicit trial.
+See [setup, compatibility, and evaluation](docs/pstack-trial.md).
+Existing skills remain available. Importing the set does not activate it globally.
+
+Pstack is by Lauren Tan, copyright 2026, distributed under the MIT license.
+Imported from [cursor/plugins at df581122cde17e6e27686b5a448bde23e4ad4318](https://github.com/cursor/plugins/tree/df581122cde17e6e27686b5a448bde23e4ad4318/pstack/skills).
+See [LICENSE.pstack](LICENSE.pstack). Each distributable package retains the
+license. Attribution is kept in this README and license files.
 
 ## Upstream adoption reviews
 
