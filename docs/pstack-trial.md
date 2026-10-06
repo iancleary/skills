@@ -43,3 +43,11 @@ establish that every workflow improves feature quality.
 
 Run `just check` before committing package changes. Review upstream updates as
 new pinned snapshots and preserve the local runtime contract and invocation policy.
+
+## Local verification
+
+The dotfiles mise configuration supplies Bun 1.4.2. In a temporary copy of the
+bundled scripts, `bun install --frozen-lockfile --ignore-scripts` succeeded,
+`bun run test` passed all 52 tests, and `bun run typecheck` passed. Repository
+`just check` passed for all 62 packages. These results verify the helper tests
+and package structure; they do not establish live Cursor or Grok integration.
