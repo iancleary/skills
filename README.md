@@ -104,7 +104,7 @@ allows the command.
 
 ## Check
 
-Run `just check`. It validates all 62 active packages, rejects moved or retired
+Run `just check`. It validates all active packages, rejects moved or retired
 packages and duplicate names, and runs offline plugin and runtime fixtures.
 See [`docs/curation.md`](docs/curation.md) for ownership policy.
 
@@ -139,6 +139,7 @@ Included skills:
 - `librarian`
 - `retro`
 - `security-and-hardening`
+- [`skip-and-prune-tautological-tests`](skills/skip-and-prune-tautological-tests/SKILL.md)
 - `test-strategy`
 - `thinking-in-the-limit`
 
