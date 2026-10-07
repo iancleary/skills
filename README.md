@@ -139,7 +139,7 @@ Included skills:
 - `librarian`
 - `retro`
 - `security-and-hardening`
-- [`skip-and-prune-tautological-tests`](skills/skip-and-prune-tautological-tests/SKILL.md)
+- [`review-tautological-tests`](skills/review-tautological-tests/SKILL.md)
 - `test-strategy`
 - `thinking-in-the-limit`
 
